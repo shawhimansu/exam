@@ -407,9 +407,10 @@ input[type="date"]:focus { border-color: var(--accent); }
   position: relative;
   overflow: hidden;
   touch-action: none;
-  margin-bottom: 14px;
+  flex: 1;          /* grows to fill available vertical space */
+  min-height: 120px;
 }
-#sigCanvas { display: block; width: 100%; }
+#sigCanvas { display: block; width: 100%; height: 100%; }
 .sig-hint {
   position: absolute;
   inset: 0;
@@ -431,7 +432,7 @@ input[type="date"]:focus { border-color: var(--accent); }
   background: rgba(26,26,46,0.08);
   pointer-events: none;
 }
-.sig-actions { display: flex; gap: 10px; }
+.sig-actions { display: flex; gap: 10px; flex-shrink: 0; }
 .sig-actions .btn { flex: 1; }
 
 /* ══════════════════════════════════
@@ -631,8 +632,8 @@ input[type="date"]:focus { border-color: var(--accent); }
       </div>
     </div>
   </div>
-  <div class="body">
-    <div class="stu-preview">
+  <div class="body" style="display:flex;flex-direction:column;overflow:hidden;padding:16px;">
+    <div class="stu-preview" style="flex-shrink:0;margin-bottom:12px;">
       <div class="prev-avatar" id="prevAvatar">—</div>
       <div>
         <div class="prev-name" id="prevName">—</div>
@@ -640,25 +641,27 @@ input[type="date"]:focus { border-color: var(--accent); }
       </div>
     </div>
 
-    <div class="card" style="padding:12px;margin-bottom:14px;">
-      <div class="card-label">Digital Signature</div>
-      <div class="sig-wrap" id="sigWrap">
-        <canvas id="sigCanvas"></canvas>
-        <div class="sig-baseline"></div>
-        <div class="sig-hint" id="sigHint">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
-          </svg>
-          <span>Sign in this area</span>
-        </div>
+    <div style="font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--ink3);margin-bottom:8px;flex-shrink:0;">Digital Signature</div>
+
+    <div class="sig-wrap" id="sigWrap">
+      <canvas id="sigCanvas"></canvas>
+      <div class="sig-baseline"></div>
+      <div class="sig-hint" id="sigHint">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+        </svg>
+        <span>Sign in this area</span>
       </div>
     </div>
+
+    <div style="height:12px;flex-shrink:0;"></div>
 
     <div class="sig-actions">
       <button class="btn btn-danger" onclick="clearSig()">Clear</button>
       <button class="btn btn-ghost" onclick="goTo('s-students')">Cancel</button>
       <button class="btn btn-success" id="submitBtn" onclick="submitAttendance()" disabled>Submit ✓</button>
     </div>
+    <div style="height:env(safe-area-inset-bottom,12px);flex-shrink:0;"></div>
   </div>
 </div>
 
@@ -681,9 +684,30 @@ input[type="date"]:focus { border-color: var(--accent); }
     <div class="suc-name" id="sucName">—</div>
     <div class="suc-msg">Attendance marked successfully</div>
     <div class="suc-time" id="sucTime">—</div>
-    <button class="btn btn-primary" style="max-width:320px;margin:0 auto;" onclick="goTo('s-students')">
+    <button class="btn btn-primary" style="max-width:320px;margin:0 auto;" onclick="backToList()">
       ← Back to List
     </button>
+  </div>
+</div>
+
+<!-- ══════════ ADD TO HOME SCREEN BANNER ══════════ -->
+<div id="pwa-banner" style="
+  display:none;
+  position:fixed;bottom:0;left:0;right:0;z-index:9999;
+  background:var(--ink);color:#fff;
+  padding:14px 20px 20px;
+  flex-direction:column;gap:6px;
+  border-radius:20px 20px 0 0;
+  box-shadow:0 -4px 24px rgba(0,0,0,0.25);
+">
+  <div style="display:flex;align-items:center;justify-content:space-between;">
+    <div style="font-weight:700;font-size:16px;">Open fullscreen on iPad</div>
+    <button onclick="document.getElementById('pwa-banner').style.display='none'"
+      style="background:rgba(255,255,255,0.15);border:none;color:#fff;border-radius:50%;
+             width:28px;height:28px;font-size:18px;cursor:pointer;line-height:1;">×</button>
+  </div>
+  <div style="font-size:13px;opacity:0.75;line-height:1.5;">
+    Tap <strong>Share</strong> (□↑) in Safari → <strong>Add to Home Screen</strong> → open from your home screen for a full-screen experience.
   </div>
 </div>
 
@@ -744,10 +768,11 @@ function goTo(id) {
 //  SCREEN 1 — DATE
 // ════════════════════════════════════════════════════════
 (function initDate() {
-  const today = new Date();
-  const v = today.toISOString().slice(0,10);
-  document.getElementById('datePicker').value = v;
-  onDatePick(v);
+  // Force CST/CDT (America/Chicago — Houston timezone)
+  const cst  = new Date().toLocaleDateString('en-CA', { timeZone: 'America/Chicago' });
+  // en-CA gives YYYY-MM-DD format directly
+  document.getElementById('datePicker').value = cst;
+  onDatePick(cst);
 })();
 
 function onDatePick(val) {
@@ -802,8 +827,19 @@ function checkPin() {
 // ════════════════════════════════════════════════════════
 function goToStudentList() {
   document.getElementById('listDateLabel').textContent = formatDate(state.selectedDate);
+  state.filterMode = 'all';
+  ['all','pending','done'].forEach(m =>
+    document.getElementById('chip-'+m).classList.toggle('active', m==='all'));
   goTo('s-students');
   loadAttendance();
+}
+
+// Called when returning from success screen — re-renders immediately
+// with local state (already up to date) then syncs with server
+function backToList() {
+  goTo('s-students');
+  renderStudents();
+  updateDashboard();
 }
 
 // JSONP — only used for lightweight GET (no signature data)
@@ -935,8 +971,9 @@ let sigCtx, sigDrawing = false, sigHasMark = false;
 function initCanvas() {
   const wrap   = document.getElementById('sigWrap');
   const canvas = document.getElementById('sigCanvas');
-  const w = wrap.clientWidth;
-  const h = Math.round(w * 0.45);
+  const w     = wrap.clientWidth;
+  const wrapH = wrap.clientHeight || Math.round(w * 0.5);
+  const h     = wrapH > 80 ? wrapH : Math.round(w * 0.45);
   canvas.width  = w * window.devicePixelRatio;
   canvas.height = h * window.devicePixelRatio;
   canvas.style.height = h + 'px';
@@ -1050,6 +1087,23 @@ function submitAttendance() {
     if (form.parentNode)   form.parentNode.removeChild(form);
   }, 30000);
 }
+
+// ════════════════════════════════════════════════════════
+//  PWA BANNER — show if running in browser (not home screen)
+// ════════════════════════════════════════════════════════
+(function() {
+  const isStandalone = window.navigator.standalone === true ||
+    window.matchMedia('(display-mode: standalone)').matches;
+  if (!isStandalone && /iPad|iPhone/i.test(navigator.userAgent)) {
+    const shown = sessionStorage.getItem('pwaBannerShown');
+    if (!shown) {
+      setTimeout(() => {
+        document.getElementById('pwa-banner').style.display = 'flex';
+      }, 2000);
+      sessionStorage.setItem('pwaBannerShown', '1');
+    }
+  }
+})();
 
 // ════════════════════════════════════════════════════════
 //  HELPERS
