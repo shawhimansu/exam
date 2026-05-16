@@ -2,1416 +2,1052 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Spring 2026 — Mechanics Practice Questions</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;0,700;1,300;1,600&family=Syne:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Class Attendance</title>
+<link href="https://script.google.com/macros/s/AKfycbwpzc6XlzXafVODH2i0MOda_xLV0ikxalCgVg2x6RNeEbW9-jLli5GGPkHC3mrINsRo/exec" rel="stylesheet">
 <style>
-/* ═══════════════════════════════════════════════════
-   ROOT & RESET
-═══════════════════════════════════════════════════ */
-:root{
-  --bg0:#06080f;
-  --bg1:#0a0e1a;
-  --bg2:#0f1525;
-  --bg3:#141c30;
-  --card:#111827;
-  --card2:#161f35;
-  --bord:#1e2d4a;
-  --bord2:#243560;
-  --gold:#d4a843;
-  --gold2:#f0c96a;
-  --gold3:#ffe5a0;
-  --teal:#2dd4bf;
-  --teal2:#5eead4;
-  --rose:#f43f5e;
-  --violet:#8b5cf6;
-  --slate:#94a3b8;
-  --muted:#4a5568;
-  --text:#e2e8f0;
-  --white:#f8fafc;
-  --serif:'Cormorant Garamond',Georgia,serif;
-  --sans:'Syne',sans-serif;
-  --mono:'Fira Code',monospace;
-  --easy-c:rgba(45,212,191,.12);
-  --easy-b:rgba(45,212,191,.3);
-  --easy-t:#2dd4bf;
-  --med-c:rgba(212,168,67,.12);
-  --med-b:rgba(212,168,67,.3);
-  --med-t:#d4a843;
-  --hard-c:rgba(244,63,94,.12);
-  --hard-b:rgba(244,63,94,.3);
-  --hard-t:#f43f5e;
+:root {
+  --ink: #1a1a2e;
+  --ink2: #4a4a6a;
+  --ink3: #9494b0;
+  --page: #f5f3ee;
+  --page2: #ffffff;
+  --accent: #2563eb;
+  --accent-soft: #eff6ff;
+  --accent2: #059669;
+  --accent2-soft: #ecfdf5;
+  --warn: #dc2626;
+  --warn-soft: #fef2f2;
+  --amber: #d97706;
+  --amber-soft: #fffbeb;
+  --border: rgba(26,26,46,0.1);
+  --border2: rgba(26,26,46,0.06);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow: 0 4px 16px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.05);
+  --shadow-lg: 0 12px 40px rgba(0,0,0,0.12), 0 4px 8px rgba(0,0,0,0.06);
+  --r: 14px;
+  --r-sm: 9px;
+  --r-lg: 20px;
 }
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{font-size:16px;scroll-behavior:smooth}
-body{
-  background:var(--bg0);
-  color:var(--text);
-  font-family:var(--sans);
-  min-height:100vh;
-  overflow-x:hidden;
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html, body { height: 100%; overflow: hidden; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--page);
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.5;
 }
 
-/* ── AMBIENT GLOW LAYERS ── */
-.ambient{
-  position:fixed;inset:0;pointer-events:none;z-index:0;
-  overflow:hidden;
+/* ── Screen System ── */
+.screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(16px);
+  transition: opacity 0.28s ease, transform 0.28s ease;
 }
-.ambient::before{
-  content:'';position:absolute;
-  width:700px;height:700px;border-radius:50%;
-  top:-200px;left:-200px;
-  background:radial-gradient(circle,rgba(212,168,67,.05)0%,transparent 65%);
-  animation:drift1 18s ease-in-out infinite;
-}
-.ambient::after{
-  content:'';position:absolute;
-  width:600px;height:600px;border-radius:50%;
-  bottom:-150px;right:-150px;
-  background:radial-gradient(circle,rgba(45,212,191,.04)0%,transparent 65%);
-  animation:drift2 22s ease-in-out infinite;
-}
-.ambient2{
-  position:fixed;inset:0;pointer-events:none;z-index:0;
-}
-.ambient2::before{
-  content:'';position:absolute;
-  width:400px;height:400px;border-radius:50%;
-  top:40%;left:50%;transform:translate(-50%,-50%);
-  background:radial-gradient(circle,rgba(139,92,246,.03)0%,transparent 70%);
-}
-@keyframes drift1{0%,100%{transform:translate(0,0)}50%{transform:translate(60px,40px)}}
-@keyframes drift2{0%,100%{transform:translate(0,0)}50%{transform:translate(-50px,-30px)}}
-
-/* ── DECORATIVE GRID ── */
-body::before{
-  content:'';position:fixed;inset:0;z-index:0;
-  background-image:
-    linear-gradient(rgba(30,45,74,.15) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(30,45,74,.15) 1px,transparent 1px);
-  background-size:60px 60px;
-  pointer-events:none;
+.screen.active {
+  opacity: 1;
+  pointer-events: all;
+  transform: translateY(0);
 }
 
-/* ═══════════════════════════════════════════════════
-   HEADER
-═══════════════════════════════════════════════════ */
-.header{
-  position:sticky;top:0;z-index:500;
-  background:rgba(6,8,15,.85);
-  backdrop-filter:blur(20px);
-  border-bottom:1px solid var(--bord);
-  display:flex;align-items:center;
-  justify-content:space-between;
-  padding:0 40px;height:58px;
+/* ── Topbar ── */
+.topbar {
+  background: var(--ink);
+  color: #fff;
+  padding: env(safe-area-inset-top, 12px) 24px 18px;
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
 }
-.hdr-left{
-  display:flex;align-items:center;gap:14px;
+.topbar::after {
+  content: '';
+  position: absolute;
+  right: -30px; top: -30px;
+  width: 180px; height: 180px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.04);
 }
-.hdr-logo{
-  width:30px;height:30px;border-radius:8px;
-  background:linear-gradient(135deg,var(--gold),var(--gold2));
-  display:flex;align-items:center;justify-content:center;
-  font-family:var(--serif);font-size:14px;font-weight:700;
-  color:var(--bg0);flex-shrink:0;
-}
-.hdr-name{
-  font-family:var(--mono);font-size:11px;
-  letter-spacing:.1em;text-transform:uppercase;
-  color:var(--slate);
-}
-.hdr-course{
-  font-family:var(--serif);font-size:15px;
-  font-style:italic;color:var(--gold2);
-  letter-spacing:.01em;
-}
-.hdr-timer{
-  display:flex;align-items:center;gap:10px;
-}
-.timer-ring{
-  position:relative;width:36px;height:36px;
-}
-.timer-ring svg{transform:rotate(-90deg);}
-.timer-ring circle{fill:none;stroke-width:3;stroke-linecap:round;}
-.ring-bg{stroke:var(--bord2);}
-.ring-fill{
-  stroke:var(--gold);
-  stroke-dasharray:100;
-  stroke-dashoffset:0;
-  transition:stroke-dashoffset 1s linear, stroke .5s;
-}
-#timerText{
-  font-family:var(--mono);font-size:14px;font-weight:500;
-  color:var(--gold2);
-  background:rgba(212,168,67,.08);
-  border:1px solid rgba(212,168,67,.2);
-  border-radius:8px;padding:5px 16px;
-  min-width:82px;text-align:center;
-  transition:all .3s;
-}
-#timerText.warn{color:var(--rose);background:rgba(244,63,94,.1);border-color:rgba(244,63,94,.3);}
-
-/* ═══════════════════════════════════════════════════
-   PAGE SYSTEM
-═══════════════════════════════════════════════════ */
-.pg{display:none;position:relative;z-index:1;}
-.pg.show{display:flex;align-items:center;justify-content:center;}
-#pgIntro{min-height:calc(100vh - 58px);padding:48px 24px;}
-#pgQuiz{
-  flex-direction:column;align-items:center;
-  min-height:calc(100vh - 58px);
-  padding:36px 24px 80px;
-}
-#pgDone{
-  flex-direction:column;align-items:center;
-  min-height:calc(100vh - 58px);
-  padding:48px 24px 80px;
+.topbar-inner { position: relative; z-index: 1; display: flex; align-items: flex-start; justify-content: space-between; }
+.topbar-title { font-family: 'DM Serif Display', serif; font-size: 26px; color: #fff; letter-spacing: -0.3px; }
+.topbar-sub { font-size: 13px; color: rgba(255,255,255,0.55); margin-top: 2px; font-weight: 400; }
+.topbar-badge {
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 50px;
+  padding: 5px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.85);
+  letter-spacing: 0.3px;
 }
 
-/* ═══════════════════════════════════════════════════
-   INTRO PAGE
-═══════════════════════════════════════════════════ */
-.intro-shell{
-  max-width:560px;width:100%;
-  animation:popIn .8s cubic-bezier(.175,.885,.32,1.275) both;
+/* ── Scrollable Body ── */
+.body {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  padding: 20px 20px;
 }
-@keyframes popIn{
-  from{opacity:0;transform:scale(.92) translateY(20px)}
-  to{opacity:1;transform:scale(1) translateY(0)}
+.body.centered { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+
+/* ── Cards ── */
+.card {
+  background: var(--page2);
+  border-radius: var(--r-lg);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  padding: 20px;
+  margin-bottom: 14px;
+}
+.card-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--ink3);
+  margin-bottom: 10px;
 }
 
-/* top seal */
-.intro-seal{
-  text-align:center;margin-bottom:36px;
+/* ── Buttons ── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 14px 22px;
+  border-radius: var(--r);
+  border: none;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.12s, opacity 0.12s, background 0.15s;
+  width: 100%;
+  letter-spacing: -0.1px;
 }
-.seal-circle{
-  width:80px;height:80px;border-radius:50%;
-  background:linear-gradient(135deg,var(--bg2),var(--bg3));
-  border:1px solid rgba(212,168,67,.3);
-  display:inline-flex;align-items:center;justify-content:center;
-  margin-bottom:16px;
-  box-shadow:0 0 40px rgba(212,168,67,.1);
-  position:relative;
-}
-.seal-circle::before{
-  content:'';position:absolute;inset:-4px;border-radius:50%;
-  border:1px dashed rgba(212,168,67,.2);
-  animation:spin 30s linear infinite;
-}
-@keyframes spin{to{transform:rotate(360deg)}}
-.seal-icon{font-size:32px;}
+.btn:active { transform: scale(0.97); }
+.btn:disabled { opacity: 0.38; cursor: not-allowed; }
+.btn-primary { background: var(--ink); color: #fff; }
+.btn-primary:active:not(:disabled) { background: var(--ink2); }
+.btn-accent { background: var(--accent); color: #fff; }
+.btn-success { background: var(--accent2); color: #fff; }
+.btn-ghost { background: transparent; border: 1.5px solid var(--border); color: var(--ink2); }
+.btn-danger { background: var(--warn-soft); color: var(--warn); border: 1px solid rgba(220,38,38,0.15); }
+.btn-sm { padding: 10px 16px; font-size: 14px; border-radius: var(--r-sm); width: auto; }
 
-/* card */
-.intro-card{
-  background:var(--card);
-  border:1px solid var(--bord2);
-  border-radius:24px;
-  padding:52px 56px;
-  position:relative;overflow:hidden;
-  box-shadow:
-    0 0 0 1px rgba(212,168,67,.06),
-    0 40px 80px rgba(0,0,0,.6),
-    inset 0 1px 0 rgba(255,255,255,.04);
+/* ══════════════════════════════════
+   SCREEN 1 — DATE
+══════════════════════════════════ */
+#s-date .date-hero {
+  text-align: center;
+  padding: 10px 0 24px;
 }
-.intro-card::before{
-  content:'';position:absolute;
-  top:0;left:0;right:0;height:2px;
-  background:linear-gradient(90deg,
-    transparent,var(--gold),var(--teal),var(--gold),transparent);
+#s-date .date-big {
+  font-family: 'DM Serif Display', serif;
+  font-size: 64px;
+  line-height: 1;
+  color: var(--ink);
+  letter-spacing: -2px;
 }
-.intro-card::after{
-  content:'';position:absolute;
-  top:-120px;right:-120px;
-  width:280px;height:280px;border-radius:50%;
-  background:radial-gradient(circle,rgba(212,168,67,.06) 0%,transparent 70%);
-  pointer-events:none;
+#s-date .date-weekday {
+  font-size: 18px;
+  color: var(--ink2);
+  margin-top: 6px;
+  font-weight: 300;
 }
+#s-date .date-month {
+  font-size: 14px;
+  color: var(--ink3);
+  margin-top: 2px;
+}
+input[type="date"] {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 14px 16px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--r);
+  background: var(--page);
+  color: var(--ink);
+  width: 100%;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+  transition: border-color 0.15s;
+  margin-bottom: 14px;
+}
+input[type="date"]:focus { border-color: var(--accent); }
 
-.intro-eyebrow{
-  font-family:var(--mono);font-size:10px;
-  letter-spacing:.16em;text-transform:uppercase;
-  color:var(--teal);margin-bottom:18px;
-  display:flex;align-items:center;gap:10px;
+/* ══════════════════════════════════
+   SCREEN 2 — PIN
+══════════════════════════════════ */
+#s-pin .pin-dots {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin: 18px 0 6px;
 }
-.intro-eyebrow::before{
-  content:'';display:block;width:24px;height:1px;
-  background:linear-gradient(90deg,var(--teal),transparent);
+.pin-dot {
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: var(--border);
+  border: 2px solid rgba(26,26,46,0.15);
+  transition: background 0.18s, transform 0.18s, border-color 0.18s;
 }
-.intro-eyebrow::after{
-  content:'';display:block;flex:1;height:1px;
-  background:linear-gradient(90deg,transparent,var(--teal),transparent);
-  max-width:120px;
+.pin-dot.filled {
+  background: var(--ink);
+  border-color: var(--ink);
+  transform: scale(1.2);
 }
+.pin-dot.error { background: var(--warn); border-color: var(--warn); }
+.pin-error { font-size: 13px; color: var(--warn); text-align: center; min-height: 18px; margin-bottom: 14px; font-weight: 500; }
+.keypad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  max-width: 340px;
+  width: 100%;
+  margin: 0 auto;
+}
+.key {
+  background: var(--page2);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 18px 0;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 28px;
+  font-weight: 300;
+  color: var(--ink);
+  cursor: pointer;
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+  transition: background 0.1s, transform 0.1s;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.key:active { background: var(--page); transform: scale(0.93); }
+.key.del { font-size: 20px; color: var(--warn); }
+.key.blank { background: transparent; border: none; box-shadow: none; cursor: default; }
 
-.intro-h1{
-  font-family:var(--serif);
-  font-size:44px;font-weight:700;
-  line-height:1.1;color:var(--white);
-  margin-bottom:6px;letter-spacing:-.01em;
+/* ══════════════════════════════════
+   SCREEN 3 — STUDENT LIST
+══════════════════════════════════ */
+.dashboard {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 16px;
 }
-.intro-h1 em{
-  font-style:italic;color:var(--gold2);
-  display:block;font-weight:300;font-size:.9em;
+.dash-card {
+  background: var(--page2);
+  border-radius: var(--r);
+  border: 1px solid var(--border);
+  padding: 12px 10px;
+  text-align: center;
 }
-.intro-sub{
-  font-size:13px;color:var(--slate);
-  line-height:1.7;margin-bottom:36px;
-  font-weight:400;
+.dash-num {
+  font-family: 'DM Serif Display', serif;
+  font-size: 30px;
+  line-height: 1;
+  letter-spacing: -1px;
 }
+.dash-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--ink3);
+  margin-top: 4px;
+}
+.dash-card.present .dash-num { color: var(--accent2); }
+.dash-card.absent .dash-num { color: var(--amber); }
+.dash-card.total .dash-num { color: var(--ink); }
 
-/* meta pills */
-.meta-row{
-  display:flex;gap:10px;margin-bottom:36px;flex-wrap:wrap;
+.search-wrap {
+  position: relative;
+  margin-bottom: 12px;
 }
-.meta-pill{
-  display:flex;align-items:center;gap:8px;
-  background:var(--bg3);border:1px solid var(--bord);
-  border-radius:100px;padding:8px 18px;
+.search-wrap input {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  width: 100%;
+  padding: 12px 16px 12px 40px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--r);
+  background: var(--page2);
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.15s;
 }
-.meta-pill .mp-icon{font-size:13px;}
-.meta-pill .mp-val{
-  font-family:var(--mono);font-size:12px;font-weight:500;
-  color:var(--text);
+.search-wrap input:focus { border-color: var(--accent); }
+.search-icon {
+  position: absolute;
+  left: 13px; top: 50%;
+  transform: translateY(-50%);
+  width: 18px; height: 18px;
+  color: var(--ink3);
+  pointer-events: none;
 }
-.meta-pill .mp-lbl{
-  font-family:var(--mono);font-size:10px;
-  color:var(--slate);letter-spacing:.05em;
+.filter-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 14px;
 }
+.filter-chip {
+  padding: 7px 14px;
+  border-radius: 50px;
+  font-size: 13px;
+  font-weight: 600;
+  border: 1.5px solid var(--border);
+  background: transparent;
+  color: var(--ink2);
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: 'DM Sans', sans-serif;
+}
+.filter-chip.active { background: var(--ink); color: #fff; border-color: var(--ink); }
 
-/* divider */
-.fancy-div{
-  display:flex;align-items:center;gap:16px;
-  margin:32px 0;
+.student-list { display: flex; flex-direction: column; gap: 8px; }
+.stu-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--page2);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: all 0.15s;
+  position: relative;
 }
-.fancy-div::before,.fancy-div::after{
-  content:'';flex:1;height:1px;
-  background:linear-gradient(90deg,transparent,var(--bord2));
+.stu-item:active { transform: scale(0.99); background: var(--page); }
+.stu-item.done {
+  background: var(--accent2-soft);
+  border-color: rgba(5,150,105,0.2);
+  cursor: default;
 }
-.fancy-div::after{
-  background:linear-gradient(90deg,var(--bord2),transparent);
+.stu-item.done:active { transform: none; }
+.stu-avatar {
+  width: 44px; height: 44px;
+  border-radius: 12px;
+  background: var(--page);
+  border: 1.5px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--ink2);
+  flex-shrink: 0;
+  font-family: 'DM Serif Display', serif;
 }
-.fancy-div-icon{color:var(--gold);font-size:12px;}
+.stu-item.done .stu-avatar {
+  background: var(--accent2);
+  border-color: var(--accent2);
+  color: #fff;
+}
+.stu-info { flex: 1; min-width: 0; }
+.stu-name { font-size: 16px; font-weight: 600; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.stu-id { font-size: 12px; color: var(--ink3); margin-top: 2px; font-weight: 500; }
+.stu-right { flex-shrink: 0; text-align: right; }
+.stu-time { font-size: 11px; color: var(--accent2); font-weight: 700; }
+.done-check {
+  width: 22px; height: 22px;
+  background: var(--accent2);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+}
+.done-check svg { width: 12px; height: 12px; color: #fff; }
+.arrow-icon { color: var(--ink3); }
 
-/* name input */
-.name-group{margin-bottom:8px;}
-.name-lbl{
-  display:flex;align-items:center;gap:8px;
-  font-family:var(--mono);font-size:10px;
-  letter-spacing:.12em;text-transform:uppercase;
-  color:var(--gold);margin-bottom:10px;
-}
-.name-lbl::after{
-  content:'';flex:1;height:1px;
-  background:linear-gradient(90deg,rgba(212,168,67,.3),transparent);
-}
-.name-input{
-  width:100%;padding:16px 22px;
-  font-family:var(--serif);font-size:22px;font-style:italic;
-  color:var(--white);
-  background:var(--bg2);
-  border:1.5px solid var(--bord2);
-  border-radius:12px;outline:none;
-  transition:border-color .2s,box-shadow .2s;
-  caret-color:var(--gold);
-}
-.name-input::placeholder{
-  color:var(--muted);font-style:italic;font-size:18px;
-}
-.name-input:focus{
-  border-color:var(--gold);
-  box-shadow:0 0 0 4px rgba(212,168,67,.1),0 0 24px rgba(212,168,67,.05);
-}
-.name-error{
-  font-family:var(--mono);font-size:11px;
-  color:var(--rose);margin-top:8px;
-  display:none;
-}
-.name-note{
-  font-size:12px;color:var(--muted);
-  margin:10px 0 32px;line-height:1.5;
-}
-
-/* start button */
-.btn-start{
-  width:100%;padding:18px;
-  background:linear-gradient(135deg,#b8892a,var(--gold),var(--gold2));
-  color:var(--bg0);
-  font-family:var(--sans);font-size:15px;font-weight:700;
-  letter-spacing:.06em;text-transform:uppercase;
-  border:none;border-radius:14px;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;gap:12px;
-  transition:all .22s;
-  box-shadow:0 8px 32px rgba(212,168,67,.25);
-  position:relative;overflow:hidden;
-}
-.btn-start::before{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(135deg,rgba(255,255,255,.15),transparent);
-  opacity:0;transition:opacity .2s;
-}
-.btn-start:hover{
-  transform:translateY(-2px);
-  box-shadow:0 14px 48px rgba(212,168,67,.35);
-}
-.btn-start:hover::before{opacity:1;}
-.btn-start:active{transform:translateY(0);}
-.btn-arrow{
-  width:28px;height:28px;border-radius:50%;
-  background:rgba(0,0,0,.2);
-  display:flex;align-items:center;justify-content:center;
-}
-
-/* rules */
-.rules-list{
-  list-style:none;display:flex;flex-direction:column;gap:10px;
-  margin-bottom:32px;
-}
-.rules-list li{
-  display:flex;align-items:flex-start;gap:12px;
-  font-size:13px;color:var(--slate);line-height:1.5;
-}
-.rule-dot{
-  width:20px;height:20px;border-radius:50%;flex-shrink:0;
-  background:var(--bg3);border:1px solid var(--bord2);
-  font-family:var(--mono);font-size:9px;font-weight:500;
-  color:var(--gold);
-  display:flex;align-items:center;justify-content:center;
-  margin-top:1px;
-}
-
-/* ═══════════════════════════════════════════════════
-   QUIZ PAGE
-═══════════════════════════════════════════════════ */
-
-/* progress */
-.prg-wrap{
-  width:100%;max-width:800px;
-  margin-bottom:28px;
-}
-.prg-header{
-  display:flex;justify-content:space-between;
-  align-items:baseline;margin-bottom:10px;
-}
-.prg-label{
-  font-family:var(--mono);font-size:10px;
-  letter-spacing:.1em;text-transform:uppercase;
-  color:var(--muted);
-}
-.prg-counter{
-  font-family:var(--serif);font-size:16px;
-  color:var(--gold2);font-weight:600;
-}
-.prg-track{
-  height:3px;background:var(--bord);
-  border-radius:2px;overflow:visible;
-  position:relative;
-}
-.prg-fill{
-  height:100%;
-  background:linear-gradient(90deg,var(--gold),var(--teal));
-  border-radius:2px;
-  transition:width .6s cubic-bezier(.4,0,.2,1);
-  position:relative;
-}
-.prg-fill::after{
-  content:'';position:absolute;
-  right:-4px;top:-4px;
-  width:11px;height:11px;border-radius:50%;
-  background:var(--teal);
-  box-shadow:0 0 8px var(--teal);
-}
-
-/* question card */
-.q-card{
-  background:var(--card);
-  border:1px solid var(--bord2);
-  border-radius:22px;
-  padding:48px 52px;
-  max-width:800px;width:100%;
-  position:relative;overflow:hidden;
-  box-shadow:
-    0 0 0 1px rgba(212,168,67,.04),
-    0 24px 60px rgba(0,0,0,.5);
-  animation:slideRight .42s cubic-bezier(.4,0,.2,1) both;
-}
-@keyframes slideRight{
-  from{opacity:0;transform:translateX(24px)}
-  to{opacity:1;transform:translateX(0)}
-}
-.q-card::before{
-  content:'';position:absolute;
-  top:0;left:0;right:0;height:2px;
-  background:var(--top-grad,linear-gradient(90deg,var(--gold),var(--teal)));
+.no-results {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--ink3);
+  font-size: 15px;
 }
 
-/* question header row */
-.q-head{
-  display:flex;align-items:center;gap:10px;
-  margin-bottom:28px;flex-wrap:wrap;
+/* ══════════════════════════════════
+   SCREEN 4 — SIGNATURE
+══════════════════════════════════ */
+#s-sign .stu-preview {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--page2);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 16px;
+  margin-bottom: 16px;
 }
-.q-num{
-  font-family:var(--mono);font-size:11px;
-  color:var(--muted);
-  background:var(--bg3);border:1px solid var(--bord);
-  border-radius:6px;padding:4px 12px;
+#s-sign .prev-avatar {
+  width: 52px; height: 52px;
+  border-radius: 14px;
+  background: var(--ink);
+  color: #fff;
+  font-family: 'DM Serif Display', serif;
+  font-size: 20px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
 }
-.diff-tag{
-  font-family:var(--mono);font-size:10px;
-  letter-spacing:.08em;text-transform:uppercase;
-  border-radius:100px;padding:4px 14px;font-weight:500;
-}
-.dt-Easy{background:var(--easy-c);color:var(--easy-t);border:1px solid var(--easy-b);}
-.dt-Medium{background:var(--med-c);color:var(--med-t);border:1px solid var(--med-b);}
-.dt-Hard{background:var(--hard-c);color:var(--hard-t);border:1px solid var(--hard-b);}
-.topic-chip{
-  margin-left:auto;
-  font-family:var(--mono);font-size:10px;
-  color:var(--muted);letter-spacing:.06em;
-  background:var(--bg2);
-  border:1px solid var(--bord);
-  border-radius:100px;padding:3px 12px;
-}
+#s-sign .prev-name { font-size: 20px; font-weight: 700; letter-spacing: -0.3px; }
+#s-sign .prev-id { font-size: 13px; color: var(--ink3); margin-top: 3px; }
 
-/* question text */
-.q-stem{
-  font-family:var(--serif);
-  font-size:22px;font-weight:300;
-  line-height:1.7;color:var(--white);
-  margin-bottom:36px;
-  letter-spacing:.01em;
+.sig-wrap {
+  background: #fff;
+  border: 2px dashed var(--border);
+  border-radius: var(--r-lg);
+  position: relative;
+  overflow: hidden;
+  touch-action: none;
+  margin-bottom: 14px;
 }
-.q-stem strong{font-weight:600;color:var(--gold3);}
-.q-stem .eq{
-  font-family:var(--mono);font-size:17px;
-  color:var(--teal2);
-  background:rgba(45,212,191,.07);
-  border:1px solid rgba(45,212,191,.15);
-  border-radius:6px;padding:2px 10px;
+#sigCanvas { display: block; width: 100%; }
+.sig-hint {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: rgba(26,26,46,0.2);
+  pointer-events: none;
+  transition: opacity 0.2s;
 }
+.sig-hint svg { width: 48px; height: 48px; }
+.sig-hint span { font-size: 14px; font-weight: 500; }
+.sig-baseline {
+  position: absolute;
+  bottom: 28px; left: 10%; right: 10%;
+  height: 1px;
+  background: rgba(26,26,46,0.08);
+  pointer-events: none;
+}
+.sig-actions { display: flex; gap: 10px; }
+.sig-actions .btn { flex: 1; }
 
-/* options */
-.opts-list{
-  display:flex;flex-direction:column;gap:11px;
-  margin-bottom:36px;
+/* ══════════════════════════════════
+   SCREEN 5 — SUCCESS
+══════════════════════════════════ */
+#s-success .success-ring {
+  width: 110px; height: 110px;
+  border-radius: 50%;
+  background: var(--accent2-soft);
+  border: 3px solid rgba(5,150,105,0.2);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 24px;
+  animation: popIn 0.5s cubic-bezier(0.34,1.56,0.64,1);
 }
-.opt{
-  display:flex;align-items:flex-start;gap:16px;
-  padding:17px 22px;
-  border:1.5px solid var(--bord);
-  border-radius:14px;cursor:pointer;
-  background:var(--bg2);
-  transition:
-    border-color .16s,
-    background .16s,
-    transform .12s,
-    box-shadow .16s;
-  user-select:none;
-  position:relative;overflow:hidden;
+@keyframes popIn { from { transform: scale(0.3); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+#s-success .success-ring svg { width: 52px; height: 52px; color: var(--accent2); }
+#s-success .suc-name {
+  font-family: 'DM Serif Display', serif;
+  font-size: 30px;
+  letter-spacing: -0.5px;
+  color: var(--ink);
+  margin-bottom: 6px;
+  text-align: center;
 }
-.opt::before{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(135deg,rgba(212,168,67,.04),transparent);
-  opacity:0;transition:opacity .16s;pointer-events:none;
-}
-.opt:hover{
-  border-color:rgba(212,168,67,.4);
-  background:rgba(212,168,67,.04);
-  transform:translateX(3px);
-}
-.opt:hover::before{opacity:1;}
-.opt:hover .opt-key{border-color:var(--gold);color:var(--gold);}
+#s-success .suc-msg { font-size: 15px; color: var(--ink3); text-align: center; margin-bottom: 8px; }
+#s-success .suc-time { font-size: 13px; color: var(--accent2); font-weight: 700; text-align: center; margin-bottom: 32px; }
 
-.opt.chosen{
-  border-color:var(--gold);
-  background:rgba(212,168,67,.08);
-  box-shadow:0 0 0 3px rgba(212,168,67,.08);
+/* ══════════════════════════════════
+   LOADING OVERLAY
+══════════════════════════════════ */
+#loader {
+  position: fixed; inset: 0;
+  background: rgba(245,243,238,0.92);
+  backdrop-filter: blur(4px);
+  z-index: 999;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
 }
-.opt.chosen .opt-key{
-  background:var(--gold);color:var(--bg0);
-  border-color:var(--gold);font-weight:700;
+#loader.on { display: flex; }
+.spinner {
+  width: 42px; height: 42px;
+  border: 3px solid var(--border);
+  border-top-color: var(--ink);
+  border-radius: 50%;
+  animation: spin 0.75s linear infinite;
 }
-.opt.chosen::before{opacity:1;}
+@keyframes spin { to { transform: rotate(360deg); } }
+#loaderMsg { font-size: 15px; font-weight: 600; color: var(--ink2); }
 
-.opt-key{
-  width:36px;height:36px;border-radius:9px;
-  border:1.5px solid var(--bord2);
-  background:var(--bg3);
-  font-family:var(--mono);font-size:12px;
-  color:var(--slate);flex-shrink:0;
-  display:flex;align-items:center;justify-content:center;
-  transition:all .16s;
+/* ══════════════════════════════════
+   TOAST
+══════════════════════════════════ */
+#toast {
+  position: fixed;
+  bottom: 30px; left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: var(--ink);
+  color: #fff;
+  padding: 12px 22px;
+  border-radius: 50px;
+  font-size: 14px;
+  font-weight: 500;
+  z-index: 1000;
+  transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+  white-space: nowrap;
+  box-shadow: var(--shadow-lg);
 }
-.opt-text{
-  font-size:15px;color:var(--text);
-  line-height:1.6;padding-top:6px;flex:1;
-}
-.opt-text .eq{
-  font-family:var(--mono);font-size:13px;
-  color:var(--teal2);
-  background:rgba(45,212,191,.07);
-  border-radius:4px;padding:1px 7px;
-}
-
-/* nav row */
-.nav-row{
-  display:flex;align-items:center;
-  justify-content:space-between;
-  padding-top:24px;
-  border-top:1px solid var(--bord);
-}
-.nav-note{
-  display:flex;align-items:center;gap:8px;
-  font-family:var(--mono);font-size:11px;
-  color:var(--muted);letter-spacing:.04em;
-}
-.lock-icon{
-  width:18px;height:18px;border-radius:5px;
-  background:var(--bg3);border:1px solid var(--bord);
-  display:flex;align-items:center;justify-content:center;
-  font-size:9px;
-}
-.btn-next{
-  display:flex;align-items:center;gap:10px;
-  padding:14px 32px;
-  background:var(--bg3);color:var(--muted);
-  border:1.5px solid var(--bord);
-  border-radius:100px;cursor:pointer;
-  font-family:var(--sans);font-size:14px;font-weight:600;
-  letter-spacing:.04em;
-  transition:all .2s;
-  pointer-events:none;opacity:.3;
-}
-.btn-next.ready{
-  background:linear-gradient(135deg,#b8892a,var(--gold));
-  color:var(--bg0);border-color:transparent;
-  opacity:1;pointer-events:auto;
-  box-shadow:0 8px 28px rgba(212,168,67,.2);
-}
-.btn-next.ready:hover{
-  transform:translateY(-2px);
-  box-shadow:0 12px 36px rgba(212,168,67,.3);
-}
-
-/* ═══════════════════════════════════════════════════
-   RESULTS PAGE
-═══════════════════════════════════════════════════ */
-.results-shell{
-  max-width:740px;width:100%;
-  animation:popIn .7s cubic-bezier(.175,.885,.32,1.275) both;
-}
-
-/* hero */
-.res-hero{
-  background:var(--card);
-  border:1px solid var(--bord2);
-  border-radius:24px 24px 0 0;
-  padding:52px 52px 44px;
-  text-align:center;position:relative;
-  overflow:hidden;
-}
-.res-hero::before{
-  content:'';position:absolute;
-  top:0;left:0;right:0;height:2px;
-  background:linear-gradient(90deg,var(--gold),var(--teal),var(--violet),var(--gold));
-  background-size:200%;
-  animation:shimmer 3s linear infinite;
-}
-@keyframes shimmer{to{background-position:200% 0}}
-.res-hero::after{
-  content:'';position:absolute;
-  bottom:-80px;left:50%;transform:translateX(-50%);
-  width:500px;height:200px;
-  background:radial-gradient(ellipse,rgba(212,168,67,.08),transparent);
-  pointer-events:none;
-}
-
-.res-univ{
-  font-family:var(--mono);font-size:10px;
-  letter-spacing:.16em;text-transform:uppercase;
-  color:var(--muted);margin-bottom:14px;
-}
-.res-name-disp{
-  font-family:var(--serif);font-size:26px;
-  font-style:italic;color:var(--gold2);
-  margin-bottom:28px;font-weight:300;
-}
-.score-ring-wrap{
-  display:inline-flex;flex-direction:column;
-  align-items:center;gap:6px;margin-bottom:24px;
-}
-.score-number{
-  font-family:var(--serif);font-size:88px;
-  font-weight:700;line-height:1;
-  background:linear-gradient(135deg,var(--gold),var(--gold2),var(--gold3));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  background-clip:text;
-}
-.score-denom{
-  font-family:var(--mono);font-size:13px;
-  color:var(--muted);letter-spacing:.08em;
-}
-.grade-badge{
-  display:inline-block;
-  font-family:var(--serif);font-size:36px;
-  font-weight:700;font-style:italic;
-  color:var(--bg0);
-  padding:8px 32px;border-radius:12px;
-  margin-bottom:6px;
-}
-
-/* res body */
-.res-body{
-  background:var(--card2);
-  border:1px solid var(--bord2);border-top:none;
-  border-radius:0 0 24px 24px;
-  padding:40px 52px;
-}
-
-/* stat strip */
-.stat-strip{
-  display:grid;grid-template-columns:repeat(3,1fr);
-  gap:14px;margin-bottom:36px;
-}
-.stat-tile{
-  background:var(--bg2);border:1px solid var(--bord);
-  border-radius:14px;padding:20px;text-align:center;
-  position:relative;overflow:hidden;
-}
-.stat-tile::before{
-  content:'';position:absolute;
-  top:0;left:0;right:0;height:2px;
-}
-.st-cor::before{background:var(--teal);}
-.st-wrg::before{background:var(--rose);}
-.st-pct::before{background:var(--gold);}
-.stat-v{
-  font-family:var(--serif);font-size:34px;
-  font-weight:700;display:block;margin-bottom:4px;
-}
-.st-cor .stat-v{color:var(--teal);}
-.st-wrg .stat-v{color:var(--rose);}
-.st-pct .stat-v{color:var(--gold2);}
-.stat-l{
-  font-family:var(--mono);font-size:10px;
-  text-transform:uppercase;letter-spacing:.1em;color:var(--muted);
-}
-
-/* breakdown */
-.bd-hdr{
-  font-family:var(--serif);font-size:18px;
-  font-style:italic;color:var(--gold2);
-  margin-bottom:16px;
-  display:flex;align-items:center;gap:12px;
-}
-.bd-hdr::after{content:'';flex:1;height:1px;background:var(--bord);}
-
-.bd-grid{
-  display:flex;flex-direction:column;gap:7px;
-  margin-bottom:36px;
-  max-height:380px;overflow-y:auto;
-  padding-right:4px;
-}
-.bd-grid::-webkit-scrollbar{width:4px;}
-.bd-grid::-webkit-scrollbar-track{background:var(--bg2);border-radius:2px;}
-.bd-grid::-webkit-scrollbar-thumb{background:var(--bord2);border-radius:2px;}
-
-.bd-item{
-  display:flex;align-items:center;gap:12px;
-  padding:11px 16px;border-radius:10px;
-  border:1px solid var(--bord);
-  font-size:13px;transition:border-color .15s;
-}
-.bd-item:hover{border-color:var(--bord2);}
-.bd-item.bi-ok{background:rgba(45,212,191,.04);border-color:rgba(45,212,191,.18);}
-.bd-item.bi-no{background:rgba(244,63,94,.04);border-color:rgba(244,63,94,.18);}
-.bd-item.bi-sk{background:var(--bg2);}
-.bi-num{font-family:var(--mono);font-size:10px;color:var(--muted);width:28px;flex-shrink:0;}
-.bi-ic{
-  width:22px;height:22px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  font-size:11px;font-weight:700;flex-shrink:0;
-}
-.bd-item.bi-ok .bi-ic{background:rgba(45,212,191,.15);color:var(--teal);}
-.bd-item.bi-no .bi-ic{background:rgba(244,63,94,.15);color:var(--rose);}
-.bd-item.bi-sk .bi-ic{background:var(--bg3);color:var(--muted);}
-.bi-txt{flex:1;color:var(--text);line-height:1.4;}
-.bi-diff{font-family:var(--mono);font-size:9px;color:var(--muted);flex-shrink:0;}
-
-/* action buttons */
-.action-row{display:flex;gap:12px;}
-.btn-pdf{
-  flex:1;display:flex;align-items:center;justify-content:center;gap:10px;
-  padding:16px;
-  background:linear-gradient(135deg,#b8892a,var(--gold),var(--gold2));
-  color:var(--bg0);
-  font-family:var(--sans);font-size:14px;font-weight:700;
-  letter-spacing:.05em;text-transform:uppercase;
-  border:none;border-radius:14px;cursor:pointer;
-  box-shadow:0 8px 32px rgba(212,168,67,.25);
-  transition:all .2s;position:relative;overflow:hidden;
-}
-.btn-pdf:hover{transform:translateY(-2px);box-shadow:0 14px 48px rgba(212,168,67,.35);}
-.btn-retry{
-  flex:0 0 auto;
-  display:flex;align-items:center;justify-content:center;gap:8px;
-  padding:16px 28px;
-  background:var(--bg2);color:var(--slate);
-  border:1.5px solid var(--bord2);
-  border-radius:14px;cursor:pointer;
-  font-family:var(--sans);font-size:14px;font-weight:600;
-  transition:all .2s;
-}
-.btn-retry:hover{border-color:var(--gold);color:var(--gold2);}
-
-/* ═══════════════════════════════════════════════════
-   RESPONSIVE
-═══════════════════════════════════════════════════ */
-@media(max-width:640px){
-  .intro-card,.q-card{padding:32px 28px;}
-  .intro-h1{font-size:32px;}
-  .q-stem{font-size:18px;}
-  .header{padding:0 20px;}
-  .hdr-course{display:none;}
-  .res-hero,.res-body{padding:32px 28px;}
-  .stat-strip{grid-template-columns:1fr 1fr;}
-  .score-number{font-size:64px;}
-}
+#toast.show { transform: translateX(-50%) translateY(0); }
 </style>
 </head>
 <body>
 
-<div class="ambient"></div>
-<div class="ambient2"></div>
-
-<!-- ══════════════════════════════════════
-     HEADER
-══════════════════════════════════════ -->
-<header class="header">
-  <div class="hdr-left">
-    <div class="hdr-logo">M</div>
-    <span class="hdr-name">MECE 4372 · UH</span>
+<!-- ══════════ SCREEN 1: DATE ══════════ -->
+<div id="s-date" class="screen active">
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div>
+        <div class="topbar-title">Attendance</div>
+        <div class="topbar-sub">Select a date to begin</div>
+      </div>
+      <div class="topbar-badge">📋 Class Register</div>
+    </div>
   </div>
-  <span class="hdr-course">Spring 2026 Mechanics Practice</span>
-  <div class="hdr-timer">
-    <div class="timer-ring">
-      <svg viewBox="0 0 36 36" width="36" height="36">
-        <circle class="ring-bg" cx="18" cy="18" r="15.9"/>
-        <circle class="ring-fill" id="ringCircle" cx="18" cy="18" r="15.9"
-          stroke-dasharray="100 100"/>
+  <div class="body centered">
+    <div style="width:100%;max-width:420px;">
+      <div class="date-hero">
+        <div class="date-big" id="dateBig">—</div>
+        <div class="date-weekday" id="dateWeekday">Select a date</div>
+        <div class="date-month" id="dateMonth"></div>
+      </div>
+      <div class="card">
+        <div class="card-label">Session Date</div>
+        <input type="date" id="datePicker" oninput="onDatePick(this.value)">
+        <button class="btn btn-primary" id="dateNext" disabled onclick="goToPin()">
+          Continue &rarr;
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ SCREEN 2: PIN ══════════ -->
+<div id="s-pin" class="screen">
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div>
+        <div class="topbar-title">Verify PIN</div>
+        <div class="topbar-sub" id="pinDateLabel">—</div>
+      </div>
+      <div class="topbar-badge">🔒 Secure</div>
+    </div>
+  </div>
+  <div class="body centered">
+    <div style="width:100%;max-width:380px;">
+      <div class="card" style="text-align:center;margin-bottom:18px;">
+        <div class="card-label">Enter 4-digit PIN</div>
+        <div class="pin-dots" id="pinDots">
+          <div class="pin-dot" id="pd0"></div>
+          <div class="pin-dot" id="pd1"></div>
+          <div class="pin-dot" id="pd2"></div>
+          <div class="pin-dot" id="pd3"></div>
+        </div>
+        <div class="pin-error" id="pinError"></div>
+      </div>
+      <div class="keypad">
+        <button class="key" onclick="kp('1')">1</button>
+        <button class="key" onclick="kp('2')">2</button>
+        <button class="key" onclick="kp('3')">3</button>
+        <button class="key" onclick="kp('4')">4</button>
+        <button class="key" onclick="kp('5')">5</button>
+        <button class="key" onclick="kp('6')">6</button>
+        <button class="key" onclick="kp('7')">7</button>
+        <button class="key" onclick="kp('8')">8</button>
+        <button class="key" onclick="kp('9')">9</button>
+        <button class="key blank"></button>
+        <button class="key" onclick="kp('0')">0</button>
+        <button class="key del" onclick="kpDel()">⌫</button>
+      </div>
+      <div style="height:16px"></div>
+      <button class="btn btn-ghost" onclick="goTo('s-date')">← Back</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ SCREEN 3: STUDENT LIST ══════════ -->
+<div id="s-students" class="screen">
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div>
+        <div class="topbar-title">Select Name</div>
+        <div class="topbar-sub" id="listDateLabel">—</div>
+      </div>
+      <button class="btn-ghost btn btn-sm" style="width:auto;font-size:13px;" onclick="refreshList()">↻ Refresh</button>
+    </div>
+  </div>
+  <div class="body" id="listBody">
+    <div class="dashboard">
+      <div class="dash-card total">
+        <div class="dash-num" id="dTotal">0</div>
+        <div class="dash-label">Total</div>
+      </div>
+      <div class="dash-card present">
+        <div class="dash-num" id="dPresent">0</div>
+        <div class="dash-label">Present</div>
+      </div>
+      <div class="dash-card absent">
+        <div class="dash-num" id="dAbsent">0</div>
+        <div class="dash-label">Remaining</div>
+      </div>
+    </div>
+
+    <div class="search-wrap">
+      <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+      </svg>
+      <input type="text" placeholder="Search by name or ID…" oninput="filterStudents(this.value)" id="searchBox">
+    </div>
+    <div class="filter-row">
+      <button class="filter-chip active" id="chip-all" onclick="setFilter('all')">All</button>
+      <button class="filter-chip" id="chip-pending" onclick="setFilter('pending')">Pending</button>
+      <button class="filter-chip" id="chip-done" onclick="setFilter('done')">Signed</button>
+    </div>
+    <div class="student-list" id="stuList"></div>
+  </div>
+</div>
+
+<!-- ══════════ SCREEN 4: SIGNATURE ══════════ -->
+<div id="s-sign" class="screen">
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div>
+        <div class="topbar-title">Sign Here</div>
+        <div class="topbar-sub">Use Apple Pencil or finger</div>
+      </div>
+    </div>
+  </div>
+  <div class="body">
+    <div class="stu-preview">
+      <div class="prev-avatar" id="prevAvatar">—</div>
+      <div>
+        <div class="prev-name" id="prevName">—</div>
+        <div class="prev-id" id="prevId">—</div>
+      </div>
+    </div>
+
+    <div class="card" style="padding:12px;margin-bottom:14px;">
+      <div class="card-label">Digital Signature</div>
+      <div class="sig-wrap" id="sigWrap">
+        <canvas id="sigCanvas"></canvas>
+        <div class="sig-baseline"></div>
+        <div class="sig-hint" id="sigHint">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+          </svg>
+          <span>Sign in this area</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="sig-actions">
+      <button class="btn btn-danger" onclick="clearSig()">Clear</button>
+      <button class="btn btn-ghost" onclick="goTo('s-students')">Cancel</button>
+      <button class="btn btn-success" id="submitBtn" onclick="submitAttendance()" disabled>Submit ✓</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ SCREEN 5: SUCCESS ══════════ -->
+<div id="s-success" class="screen">
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div>
+        <div class="topbar-title">Attendance Recorded</div>
+        <div class="topbar-sub">Successfully saved</div>
+      </div>
+    </div>
+  </div>
+  <div class="body centered" style="text-align:center;">
+    <div class="success-ring">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <polyline points="20 6 9 17 4 12"/>
       </svg>
     </div>
-    <span id="timerText">90:00</span>
-  </div>
-</header>
-
-<!-- ══════════════════════════════════════
-     PAGE: INTRO
-══════════════════════════════════════ -->
-<div class="pg show" id="pgIntro">
-<div class="intro-shell">
-
-  <div class="intro-seal">
-    <div class="seal-circle">
-      <span class="seal-icon">⚙</span>
-    </div>
-    <div style="font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);">University of Houston · MECE 4372</div>
-  </div>
-
-  <div class="intro-card">
-    <div class="intro-eyebrow">Control Systems Analysis &amp; Design</div>
-
-    <h1 class="intro-h1">
-      Spring 2026
-      <em>Mechanics Practice Questions</em>
-    </h1>
-    <p class="intro-sub">
-      25 carefully crafted questions spanning Root Locus, Bode Diagrams, PID/PD/PI/Lead-Lag Compensator Design,
-      Damping Analysis, Steady-State Error, Fourier Series, and MATLAB implementation.
-      Mirrors the style of MECE 4372 final examinations.
-    </p>
-
-    <div class="meta-row">
-      <div class="meta-pill">
-        <span class="mp-icon">📋</span>
-        <div><div class="mp-val">25</div><div class="mp-lbl">Questions</div></div>
-      </div>
-      <div class="meta-pill">
-        <span class="mp-icon">⏱</span>
-        <div><div class="mp-val">90 min</div><div class="mp-lbl">Time Limit</div></div>
-      </div>
-      <div class="meta-pill">
-        <span class="mp-icon">🏆</span>
-        <div><div class="mp-val">25 pts</div><div class="mp-lbl">Total Points</div></div>
-      </div>
-    </div>
-
-    <ul class="rules-list">
-      <li><div class="rule-dot">1</div><span>Questions appear <strong>one at a time</strong> — you cannot return to a previous question once answered.</span></li>
-      <li><div class="rule-dot">2</div><span>The <strong>90-minute timer</strong> starts when you click Begin. The exam auto-submits when time expires.</span></li>
-      <li><div class="rule-dot">3</div><span>At the end, a <strong>detailed PDF report</strong> with your score, grade, and explanations will be generated.</span></li>
-    </ul>
-
-    <div class="fancy-div"><span class="fancy-div-icon">✦</span></div>
-
-    <div class="name-group">
-      <div class="name-lbl">Student Name</div>
-      <input class="name-input" id="nameInp" type="text"
-        placeholder="Enter your full name…"
-        autocomplete="name" spellcheck="false"/>
-      <div class="name-error" id="nameErr">⚠ Please enter your name to begin the examination.</div>
-    </div>
-    <p class="name-note">Your name will be printed on the auto-generated PDF report.</p>
-
-    <button class="btn-start" onclick="beginExam()">
-      Begin Examination
-      <div class="btn-arrow">
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-          <path d="M3 7h8M8 4l3 3-3 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </div>
+    <div class="suc-name" id="sucName">—</div>
+    <div class="suc-msg">Attendance marked successfully</div>
+    <div class="suc-time" id="sucTime">—</div>
+    <button class="btn btn-primary" style="max-width:320px;margin:0 auto;" onclick="goTo('s-students')">
+      ← Back to List
     </button>
   </div>
 </div>
+
+<!-- ══════════ LOADER ══════════ -->
+<div id="loader">
+  <div class="spinner"></div>
+  <div id="loaderMsg">Loading…</div>
 </div>
 
-<!-- ══════════════════════════════════════
-     PAGE: QUIZ
-══════════════════════════════════════ -->
-<div class="pg" id="pgQuiz">
-  <div class="prg-wrap">
-    <div class="prg-header">
-      <span class="prg-label">Exam Progress</span>
-      <span class="prg-counter" id="prgCounter">Question 1 of 25</span>
-    </div>
-    <div class="prg-track">
-      <div class="prg-fill" id="prgFill" style="width:0%"></div>
-    </div>
-  </div>
-  <div id="qMount"></div>
-</div>
+<!-- ══════════ TOAST ══════════ -->
+<div id="toast"></div>
 
-<!-- ══════════════════════════════════════
-     PAGE: RESULTS
-══════════════════════════════════════ -->
-<div class="pg" id="pgDone">
-<div class="results-shell">
-  <div class="res-hero">
-    <div class="res-univ">MECE 4372 · University of Houston · Spring 2026</div>
-    <div class="res-name-disp" id="resNameDisp">—</div>
-    <div class="score-ring-wrap">
-      <div class="score-number" id="resScore">—</div>
-      <div class="score-denom">points out of 25</div>
-    </div>
-    <div class="grade-badge" id="resGrade">—</div>
-  </div>
-  <div class="res-body">
-    <div class="stat-strip">
-      <div class="stat-tile st-cor">
-        <span class="stat-v" id="stCor">—</span>
-        <span class="stat-l">Correct</span>
-      </div>
-      <div class="stat-tile st-wrg">
-        <span class="stat-v" id="stWrg">—</span>
-        <span class="stat-l">Incorrect</span>
-      </div>
-      <div class="stat-tile st-pct">
-        <span class="stat-v" id="stPct">—</span>
-        <span class="stat-l">Score %</span>
-      </div>
-    </div>
-
-    <div class="bd-hdr">Question Breakdown</div>
-    <div class="bd-grid" id="bdGrid"></div>
-
-    <div class="action-row">
-      <button class="btn-pdf" onclick="buildPDF()">
-        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-          <path d="M4.5 2.25h6.75L15.75 7.5v8.25a1.5 1.5 0 01-1.5 1.5H4.5a1.5 1.5 0 01-1.5-1.5v-12A1.5 1.5 0 014.5 2.25z" stroke="currentColor" stroke-width="1.5"/>
-          <path d="M11.25 2.25V7.5h4.5M6.75 10.5h4.5M6.75 13.5h4.5M6.75 7.5h1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-        </svg>
-        Download PDF Report
-      </button>
-      <button class="btn-retry" onclick="restartExam()">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-          <path d="M2.5 8a5.5 5.5 0 1 1 1.6 3.9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-          <path d="M2.5 12.5v-4h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        Retry
-      </button>
-    </div>
-  </div>
-</div>
-</div>
-
-<!-- ══════════════════════════════════════════════════════
-     JAVASCRIPT — DATA + LOGIC
-══════════════════════════════════════════════════════ -->
 <script>
-/* ─── QUESTION BANK ────────────────────────────────── */
-const BANK = [
-{diff:"Easy",topic:"Controller ID",
- stem:`Which of the following expressions represents a <strong>Proportional-Derivative (PD)</strong> controller?`,
- opts:["8 + 3/s","5 + 2s","1/s","10 + s + 4/s"],
- ans:1,
- exp:`A PD controller has the form K<sub>p</sub> + K<sub>d</sub>·s. <b>5 + 2s</b> matches exactly — a constant (proportional) plus a term in s (derivative). Option A has 1/s (integral, making it PI). Option C is pure integral. Option D with 1/s is PID.`},
+// ═══════════════════════════════════════════════
+//  CONFIG — paste your Apps Script URL here
+// ═══════════════════════════════════════════════
+const SCRIPT_URL = 'YOUR_APPS_SCRIPT_WEB_APP_URL_HERE';
+const CORRECT_PIN = '1234';
 
-{diff:"Easy",topic:"Damping Ratio",
- stem:`A closed-loop pole is located at <span class="eq">s = −2 + j2</span>. The damping ratio ζ is:`,
- opts:["0.5","0.707","0.866","1.0"],
- ans:1,
- exp:`σ = 2, ω<sub>d</sub> = 2. ω<sub>n</sub> = √(σ²+ω<sub>d</sub>²) = √8 = 2√2. ζ = σ/ω<sub>n</sub> = 2/(2√2) = 1/√2 = <b>0.707</b>. The 45° angle from the negative real axis always gives ζ = 0.707.`},
-
-{diff:"Easy",topic:"System Type",
- stem:`The initial slope of an open-loop Bode magnitude plot is <strong>−20 dB/decade</strong>. The system type is:`,
- opts:["Type 0","Type 1","Type 2","Type 3"],
- ans:1,
- exp:`Initial slope rule: 0 dB/dec → Type 0; −20 dB/dec → <b>Type 1</b>; −40 dB/dec → Type 2. Each integrator (pole at origin) contributes one order of type and −20 dB/dec to the initial slope.`},
-
-{diff:"Easy",topic:"Root Locus",
- stem:`For the open-loop transfer function <span class="eq">G(s) = K/[s(s+2)(s+6)]</span>, how many root locus <strong>asymptotes</strong> are there?`,
- opts:["1","2","3","4"],
- ans:2,
- exp:`Number of asymptotes = n − m = 3 poles − 0 zeros = <b>3</b>. The poles are at s = 0, −2, −6 and there are no finite zeros, so all three branches go to infinity along asymptotes.`},
-
-{diff:"Easy",topic:"Steady-State Error",
- stem:`A <strong>Type-1</strong> unity-feedback closed-loop system is subjected to a unit <strong>step</strong> input. Its steady-state error is:`,
- opts:["1","1/(1+Kp)","0","Infinity"],
- ans:2,
- exp:`For a Type-1 system, K<sub>p</sub> = lim<sub>s→0</sub> s·G(s)/s = ∞ (one integrator). Steady-state error = 1/(1+K<sub>p</sub>) = 1/(1+∞) = <b>0</b>. Type ≥ 1 systems track step inputs perfectly.`},
-
-{diff:"Easy",topic:"2nd-Order Systems",
- stem:`A second-order system has characteristic equation <span class="eq">s² + 6s + 9 = 0</span>. This system is:`,
- opts:["Underdamped (ζ < 1)","Critically damped (ζ = 1)","Overdamped (ζ > 1)","Marginally stable (ζ = 0)"],
- ans:1,
- exp:`Comparing s² + 2ζω<sub>n</sub>s + ω<sub>n</sub>² = 0: ω<sub>n</sub>² = 9 → ω<sub>n</sub> = 3. Then 2ζω<sub>n</sub> = 6 → ζ = 6/6 = <b>1.0</b>. Exactly ζ = 1 → <b>critically damped</b>. The roots are s = −3, −3 (repeated real roots).`},
-
-{diff:"Easy",topic:"Root Locus",
- stem:`A major effect of adding an open-loop <strong>pole</strong> to a closed-loop system is:`,
- opts:["Pulling the root locus toward the left-half plane","Increasing system stability","Pulling the root locus toward the right-half plane (decreasing stability)","Eliminating steady-state error"],
- ans:2,
- exp:`Adding an open-loop pole pushes root locus branches toward the <b>right-half plane</b>, which <b>decreases stability</b>. This is why adding poles without compensating zeros can destabilize a system. (Adding zeros has the opposite, stabilizing effect.)`},
-
-{diff:"Easy",topic:"PID Controller",
- stem:`A PD controller <span class="eq">(4 + s)</span> and a PI controller <span class="eq">(1 + 0.5/s)</span> are cascaded to form a PID. The combined PID controller is:`,
- opts:["4.5 + 2/s + s","4 + 0.5/s + s","4.5 + 2/s + 4.5s","4 + 2/s + 4s"],
- ans:0,
- exp:`PID = PD × PI = (4+s)(1+0.5/s) = 4·1 + 4·0.5/s + s·1 + s·0.5/s = 4 + 2/s + s + 0.5 = <b>4.5 + 2/s + s</b>. Always expand term by term carefully.`},
-
-{diff:"Medium",topic:"Phase Margin",
- stem:`A Bode plot shows the phase at the gain crossover frequency is <strong>−145°</strong>. The phase margin (PM) is:`,
- opts:["−145°","−35°","35°","145°"],
- ans:2,
- exp:`PM = 180° + ∠G(jω<sub>gc</sub>) = 180° + (−145°) = <b>35°</b>. A positive PM confirms a stable closed-loop system. The convention is PM = 180° + phase-at-gain-crossover.`},
-
-{diff:"Medium",topic:"Root Locus — Centroid",
- stem:`For <span class="eq">G(s)H(s) = K(s+1)/[s(s+3)(s+5)]</span>, the centroid σ<sub>a</sub> of the root locus asymptotes is:`,
- opts:["−3.5","−7/2","−(0+3+5−1)/2 = −3.5","All of the above are equivalent"],
- ans:3,
- exp:`σ<sub>a</sub> = (Σpoles − Σzeros)/(n−m). Poles: 0,−3,−5 → sum = −8. Zero: −1 → sum = −1. n−m = 3−1 = 2. σ<sub>a</sub> = (−8−(−1))/2 = −7/2 = <b>−3.5</b>. All three choices A, B, C express the same value.`},
-
-{diff:"Medium",topic:"Lead Compensator",
- stem:`For the lead compensator <span class="eq">C(s) = (s+3)/(s+12)</span>, the maximum phase lead angle φ<sub>m</sub> is:`,
- opts:["30°","36.87°","45°","53.13°"],
- ans:1,
- exp:`φ<sub>m</sub> = sin⁻¹((p−z)/(p+z)) = sin⁻¹((12−3)/(12+3)) = sin⁻¹(9/15) = sin⁻¹(0.6) = <b>36.87°</b>. The frequency of maximum lead is ω<sub>m</sub> = √(z·p) = √(3×12) = 6 rad/s.`},
-
-{diff:"Medium",topic:"Velocity Error Constant",
- stem:`A unity-feedback system has <span class="eq">G(s) = 40/[s(s+4)(s+10)]</span>. The velocity error constant K<sub>v</sub> is:`,
- opts:["1","10","4","40"],
- ans:0,
- exp:`K<sub>v</sub> = lim<sub>s→0</sub> s·G(s) = lim<sub>s→0</sub> s·40/[s(s+4)(s+10)] = 40/(4×10) = 40/40 = <b>1</b>. Steady-state ramp error = 1/K<sub>v</sub> = 1.`},
-
-{diff:"Medium",topic:"Root Locus — Stability",
- stem:`For <span class="eq">G(s)H(s) = K/[s(s+1)(s+3)]</span>, using the Routh–Hurwitz criterion, the value of K at which the root locus crosses the imaginary axis is:`,
- opts:["K = 12","K = 4","K = 6","K = 3"],
- ans:0,
- exp:`Closed-loop: s³+4s²+3s+K = 0. Routh array: Row1:[1,3], Row2:[4,K], Row3:[(12−K)/4, 0]. Stability requires 12−K > 0 → K < 12. At <b>K = 12</b>, the system is marginally stable (crosses jω axis).`},
-
-{diff:"Medium",topic:"2nd-Order — Damped Freq",
- stem:`A closed-loop system has poles at <span class="eq">s = −3 ± j4</span>. The damped natural frequency ω<sub>d</sub> and undamped natural frequency ω<sub>n</sub> are:`,
- opts:["ω<sub>d</sub>=4, ω<sub>n</sub>=5","ω<sub>d</sub>=3, ω<sub>n</sub>=5","ω<sub>d</sub>=4, ω<sub>n</sub>=4","ω<sub>d</sub>=5, ω<sub>n</sub>=4"],
- ans:0,
- exp:`ω<sub>d</sub> = imaginary part = <b>4 rad/s</b>. ω<sub>n</sub> = |pole| = √(3²+4²) = √25 = <b>5 rad/s</b>. Damping ratio ζ = σ/ω<sub>n</sub> = 3/5 = 0.6.`},
-
-{diff:"Medium",topic:"Angle Deficiency",
- stem:`An uncompensated system has <span class="eq">G(s) = K/[s(s+4)]</span>. The desired closed-loop pole is <span class="eq">S₁ = −2 + j3</span>. The angle from the pole at 0 is 123.7° and from −4 is 56.3°. The angle deficiency (AD) is:`,
- opts:["0°","20°","−180°","AD = 180° − (123.7°+56.3°) = 0°"],
- ans:3,
- exp:`Total angle = −(123.7°+56.3°) = −180°. Condition requires −180°. AD = −180°−(−180°) = <b>0°</b> — the desired pole already lies on the uncompensated locus! No compensator is needed. This is a special case worth recognizing.`},
-
-{diff:"Medium",topic:"Closed-Loop TF",
- stem:`A unity-feedback system has <span class="eq">G(s) = K(s+2)/(s²+5s+6)</span>. The closed-loop characteristic equation is:`,
- opts:["s²+(5+K)s+(6+2K)=0","s²+5s+(6+K)=0","s²+Ks+(5+2K)=0","(s+2)(s+3)+K=0"],
- ans:0,
- exp:`Characteristic equation = 1+G(s) = 0 → denominator + numerator = 0. s²+5s+6 + K(s+2) = s²+(5+K)s+(6+2K) = 0. This is the standard form: <b>s²+(5+K)s+(6+2K) = 0</b>.`},
-
-{diff:"Medium",topic:"Fourier Series",
- stem:`A periodic square wave with period T=4 is: f(t) = 2 for 0≤t<2, and f(t) = −2 for 2≤t<4. The Fourier coefficient <strong>a₀</strong> (DC component) is:`,
- opts:["4","2","0","−2"],
- ans:2,
- exp:`a<sub>0</sub> = (1/T)∫₀ᵀ f(t)dt = (1/4)[∫₀² 2 dt + ∫₂⁴ (−2) dt] = (1/4)[4+(−4)] = <b>0</b>. The function has equal positive and negative areas, so the mean value (DC component) is zero.`},
-
-{diff:"Medium",topic:"MATLAB / Lab",
- stem:`Which MATLAB command correctly defines the controller <span class="eq">C(s) = 4 + 2s + 0.5/s</span>?`,
- opts:["tf([2 4 0.5],[1 0])","tf([4 2 0.5],[1 0])","tf([0.5 4 2],[0 1])","tf([2 4 0.5],[0 1])"],
- ans:0,
- exp:`C(s) = 4+2s+0.5/s = (2s²+4s+0.5)/s. Numerator coefficients highest-to-lowest: [2, 4, 0.5]. Denominator: [1, 0]. MATLAB: <b>tf([2 4 0.5],[1 0])</b>. Note coefficient order is always highest power first.`},
-
-{diff:"Hard",topic:"Root Locus — Gain",
- stem:`A second-order system has open-loop poles at s=0 and s=−6. The root locus has a breakaway point on the real axis between 0 and −6. Using dK/ds = 0, the breakaway point is at:`,
- opts:["s = −3","s = −2","s = −4","s = −1"],
- ans:0,
- exp:`G(s)H(s) = K/[s(s+6)] → K = −s(s+6) = −s²−6s on the real axis. dK/ds = −2s−6 = 0 → s = <b>−3</b>. The breakaway point is the midpoint between 0 and −6, which makes sense by symmetry for two real poles with no zeros.`},
-
-{diff:"Hard",topic:"PD Controller Design",
- stem:`A PD controller is to compensate an angle deficiency of <strong>45°</strong> so that the new root locus passes through <span class="eq">S₁ = −2 + j2</span>. The zero of the PD controller (placed on the real axis) satisfies:`,
- opts:["Zero at s = −4 (controller: 4+s)","Zero at s = −2 (controller: 2+s)","Zero at s = −6 (controller: 6+s)","Zero at s = −3 (controller: 3+s)"],
- ans:0,
- exp:`Zero at −z<sub>c</sub>. Vector from −z<sub>c</sub> to S₁=(−2+j2): real part = (z<sub>c</sub>−2), imag = 2. Angle = arctan(2/(z<sub>c</sub>−2)) = 45° → z<sub>c</sub>−2 = 2 → z<sub>c</sub> = 4. Controller: (s+4) = <b>4+s</b>. Verify: arctan(2/(4−2))=arctan(1)=45°. ✓`},
-
-{diff:"Hard",topic:"Lead Compensator — Bode",
- stem:`A lead compensator with <span class="eq">a = 0.1</span> is used in Bode design. The maximum phase lead it provides is approximately:`,
- opts:["30°","45°","55°","65°"],
- ans:2,
- exp:`φ<sub>m</sub> = sin⁻¹((1−a)/(1+a)) = sin⁻¹(0.9/1.1) = sin⁻¹(0.818) ≈ <b>55°</b>. For a=0.1 (10× ratio between pole and zero), the lead compensator can provide about 55° of phase lead at the geometric mean frequency ω<sub>m</sub> = 1/(T√a).`},
-
-{diff:"Hard",topic:"PI Compensator Effect",
- stem:`A PI compensator <span class="eq">C(s) = K<sub>p</sub>(1 + 1/(T<sub>i</sub>s))</span> is added to a plant that already has one integrator. The resulting closed-loop system type becomes:`,
- opts:["Type 1","Type 2","Type 3","Type 0"],
- ans:1,
- exp:`The original plant has 1 integrator (Type 1). A PI controller adds 1 more integrator (pole at origin). Total integrators = 2 → <b>Type 2</b>. A Type-2 system has zero steady-state error for both step AND ramp inputs.`},
-
-{diff:"Hard",topic:"Routh–Hurwitz",
- stem:`For the closed-loop characteristic equation <span class="eq">s⁴ + 2s³ + 3s² + 4s + K = 0</span>, the Routh array first column values include a term (8−4K)/4. For marginal stability, K is:`,
- opts:["K = 1.5","K = 2","K = 0.5","K = 3"],
- ans:1,
- exp:`Building the Routh array: Row1:[1,3,K], Row2:[2,4,0], Row3:[(6−4)/2,(2K)/2]=[1,K], Row4:[(4−2K)/1], Row5:[K]. For stability the first column must all be positive: 4−2K > 0 → K < 2. At <b>K = 2</b>, the system is marginally stable.`},
-
-{diff:"Hard",topic:"Lag Compensator",
- stem:`A lag compensator must increase the static velocity constant from K<sub>v</sub>=1 to K<sub>v</sub>=10 without significantly altering the root locus shape. The required ratio β = (zero/pole) of the compensator is:`,
- opts:["β = 5","β = 10","β = 20","β = 2"],
- ans:1,
- exp:`A lag compensator multiplies the DC gain by β = z/p (where z > p, both small). The DC gain scales K<sub>v</sub> by β. Required: K<sub>v,new</sub>/K<sub>v,old</sub> = 10/1 = <b>10</b>. So β = 10. Place pole at −0.01 and zero at −0.1 for example.`},
-
-{diff:"Hard",topic:"Frequency Response",
- stem:`A unity-feedback system has <span class="eq">G(s) = 100/[s(s+10)]</span>. At the gain crossover frequency, the phase of G(jω) is approximately −135°. The <strong>phase margin</strong> is:`,
- opts:["−135°","−45°","45°","135°"],
- ans:2,
- exp:`PM = 180° + phase at gain crossover = 180° + (−135°) = <b>45°</b>. This is a healthy phase margin — generally PM ≥ 45° is considered well-damped. The corresponding damping ratio is approximately ζ ≈ 0.45.`}
+// ── Student roster (pre-loaded, edit as needed) ──
+const STUDENTS = [
+  { name: 'Aarav Sharma',    id: 'STU001' },
+  { name: 'Priya Patel',     id: 'STU002' },
+  { name: 'Rohan Mehta',     id: 'STU003' },
+  { name: 'Ananya Singh',    id: 'STU004' },
+  { name: 'Vikram Rao',      id: 'STU005' },
+  { name: 'Ishaan Gupta',    id: 'STU006' },
+  { name: 'Meera Nair',      id: 'STU007' },
+  { name: 'Arjun Verma',     id: 'STU008' },
+  { name: 'Kavya Reddy',     id: 'STU009' },
+  { name: 'Siddharth Joshi', id: 'STU010' },
+  { name: 'Divya Pillai',    id: 'STU011' },
+  { name: 'Karan Malhotra',  id: 'STU012' },
+  { name: 'Sneha Iyer',      id: 'STU013' },
+  { name: 'Aditya Kumar',    id: 'STU014' },
+  { name: 'Pooja Desai',     id: 'STU015' },
 ];
 
-/* ─── STATE ─────────────────────────────────────────── */
-let studentName='', curIdx=0, chosen=null;
-let answers=new Array(25).fill(null);
-let timerSec=90*60, timerID=null;
-let t_start=null, t_end=null;
+// ═══════════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════════
+let state = {
+  selectedDate: '',
+  currentStudent: null,
+  attendance: {},      // { studentId: { time, sigUrl } }
+  filterMode: 'all',
+  searchQuery: '',
+};
 
-/* ─── PAGE SWITCH ───────────────────────────────────── */
-function showPage(id){
-  ['pgIntro','pgQuiz','pgDone'].forEach(p=>{
-    const el=document.getElementById(p);
-    el.classList.remove('show');
+// ═══════════════════════════════════════════════
+//  SCREEN ROUTING
+// ═══════════════════════════════════════════════
+function goTo(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+// ═══════════════════════════════════════════════
+//  SCREEN 1 — DATE
+// ═══════════════════════════════════════════════
+(function initDatePicker() {
+  const today = new Date();
+  const yyyy = today.getFullYear();
+  const mm = String(today.getMonth()+1).padStart(2,'0');
+  const dd = String(today.getDate()).padStart(2,'0');
+  const v = `${yyyy}-${mm}-${dd}`;
+  document.getElementById('datePicker').value = v;
+  onDatePick(v);
+})();
+
+function onDatePick(val) {
+  if (!val) { document.getElementById('dateNext').disabled = true; return; }
+  state.selectedDate = val;
+  const d = new Date(val + 'T12:00:00');
+  const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  document.getElementById('dateBig').textContent = String(d.getDate()).padStart(2,'0');
+  document.getElementById('dateWeekday').textContent = days[d.getDay()];
+  document.getElementById('dateMonth').textContent = `${months[d.getMonth()]} ${d.getFullYear()}`;
+  document.getElementById('dateNext').disabled = false;
+}
+
+function goToPin() {
+  if (!state.selectedDate) return;
+  pinReset();
+  document.getElementById('pinDateLabel').textContent = formatDate(state.selectedDate);
+  goTo('s-pin');
+}
+
+// ═══════════════════════════════════════════════
+//  SCREEN 2 — PIN
+// ═══════════════════════════════════════════════
+let pinVal = '';
+function pinReset() {
+  pinVal = '';
+  updateDots();
+  document.getElementById('pinError').textContent = '';
+}
+function kp(d) {
+  if (pinVal.length >= 4) return;
+  pinVal += d;
+  updateDots();
+  if (pinVal.length === 4) setTimeout(checkPin, 200);
+}
+function kpDel() {
+  pinVal = pinVal.slice(0,-1);
+  updateDots();
+  document.getElementById('pinError').textContent = '';
+}
+function updateDots() {
+  for (let i=0; i<4; i++) {
+    const d = document.getElementById(`pd${i}`);
+    d.classList.toggle('filled', i < pinVal.length);
+    d.classList.remove('error');
+  }
+}
+function checkPin() {
+  if (pinVal === CORRECT_PIN) {
+    goToStudentList();
+  } else {
+    for (let i=0; i<4; i++) document.getElementById(`pd${i}`).classList.add('error');
+    document.getElementById('pinError').textContent = 'Incorrect PIN. Try again.';
+    setTimeout(() => { pinReset(); }, 900);
+  }
+}
+
+// ═══════════════════════════════════════════════
+//  SCREEN 3 — STUDENT LIST
+// ═══════════════════════════════════════════════
+function goToStudentList() {
+  document.getElementById('listDateLabel').textContent = formatDate(state.selectedDate);
+  goTo('s-students');
+  loadAttendance();
+}
+
+async function loadAttendance() {
+  showLoader('Loading attendance…');
+  try {
+    const url = `${SCRIPT_URL}?action=getAttendance&date=${state.selectedDate}`;
+    const resp = await fetch(url);
+    const data = await resp.json();
+    if (data.status === 'ok') {
+      state.attendance = {};
+      (data.records || []).forEach(r => {
+        state.attendance[r.studentId] = { time: r.time, sigUrl: r.sigUrl };
+      });
+    }
+  } catch(e) {
+    toast('Could not load from server — showing local state');
+  }
+  hideLoader();
+  renderStudents();
+  updateDashboard();
+}
+
+async function refreshList() {
+  document.getElementById('searchBox').value = '';
+  state.searchQuery = '';
+  await loadAttendance();
+  toast('Refreshed ✓');
+}
+
+function setFilter(mode) {
+  state.filterMode = mode;
+  ['all','pending','done'].forEach(m => {
+    document.getElementById(`chip-${m}`).classList.toggle('active', m === mode);
   });
-  document.getElementById(id).classList.add('show');
+  renderStudents();
 }
 
-/* ─── TIMER ─────────────────────────────────────────── */
-const TOTAL=90*60;
-function startTimer(){
-  timerID=setInterval(()=>{
-    timerSec--;
-    if(timerSec<=0){clearInterval(timerID);finishExam();return;}
-    updateTimerUI();
-  },1000);
-}
-function updateTimerUI(){
-  const m=String(Math.floor(timerSec/60)).padStart(2,'0');
-  const s=String(timerSec%60).padStart(2,'0');
-  const el=document.getElementById('timerText');
-  el.textContent=`${m}:${s}`;
-  if(timerSec<=600)el.classList.add('warn'); else el.classList.remove('warn');
-  // ring
-  const pct=(timerSec/TOTAL)*100;
-  const circle=document.getElementById('ringCircle');
-  const strokeCol=timerSec<=600?'#f43f5e':timerSec<=1800?'#f59e0b':'#d4a843';
-  circle.style.stroke=strokeCol;
-  circle.style.strokeDashoffset=(100-pct).toFixed(2);
+function filterStudents(q) {
+  state.searchQuery = q.toLowerCase();
+  renderStudents();
 }
 
-/* ─── BEGIN ─────────────────────────────────────────── */
-function beginExam(){
-  const v=document.getElementById('nameInp').value.trim();
-  if(!v){
-    document.getElementById('nameErr').style.display='block';
-    document.getElementById('nameInp').focus();
+function renderStudents() {
+  const list = document.getElementById('stuList');
+  let filtered = STUDENTS.filter(s => {
+    const q = state.searchQuery;
+    const match = !q || s.name.toLowerCase().includes(q) || s.id.toLowerCase().includes(q);
+    const done = !!state.attendance[s.id];
+    if (state.filterMode === 'pending' && done) return false;
+    if (state.filterMode === 'done' && !done) return false;
+    return match;
+  });
+
+  if (!filtered.length) {
+    list.innerHTML = `<div class="no-results">No students found</div>`;
     return;
   }
-  document.getElementById('nameErr').style.display='none';
-  studentName=v; t_start=new Date();
-  showPage('pgQuiz'); startTimer(); renderQuestion(0);
-}
 
-/* ─── RENDER QUESTION ───────────────────────────────── */
-function renderQuestion(idx){
-  curIdx=idx; chosen=null;
-  const q=BANK[idx];
-  const pct=((idx)/25*100).toFixed(1);
-  document.getElementById('prgFill').style.width=pct+'%';
-  document.getElementById('prgCounter').textContent=`Question ${idx+1} of 25`;
-
-  const keys=['A','B','C','D'];
-  const isLast=(idx===24);
-  const btnLabel=isLast?'Submit Exam':'Next Question';
-
-  // gradient per difficulty
-  const gradMap={
-    'Easy':'linear-gradient(90deg,var(--teal),rgba(45,212,191,.3))',
-    'Medium':'linear-gradient(90deg,var(--gold),rgba(212,168,67,.3))',
-    'Hard':'linear-gradient(90deg,var(--rose),rgba(244,63,94,.3))'
-  };
-
-  const optsHTML=q.opts.map((o,i)=>`
-    <div class="opt" id="opt_${i}" onclick="pickAnswer(${i})">
-      <div class="opt-key" id="key_${i}">${keys[i]}</div>
-      <div class="opt-text">${o}</div>
-    </div>`).join('');
-
-  document.getElementById('qMount').innerHTML=`
-    <div class="q-card" style="--top-grad:${gradMap[q.diff]||gradMap.Medium}">
-      <div class="q-head">
-        <span class="q-num">Question ${idx+1}</span>
-        <span class="diff-tag dt-${q.diff}">${q.diff}</span>
-        <span class="topic-chip">${q.topic}</span>
-      </div>
-      <div class="q-stem">${q.stem}</div>
-      <div class="opts-list">${optsHTML}</div>
-      <div class="nav-row">
-        <div class="nav-note">
-          <div class="lock-icon">🔒</div>
-          Cannot return to previous questions
+  list.innerHTML = filtered.map(s => {
+    const rec = state.attendance[s.id];
+    const initials = s.name.split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase();
+    if (rec) {
+      return `<div class="stu-item done">
+        <div class="stu-avatar">${initials}</div>
+        <div class="stu-info">
+          <div class="stu-name">${s.name}</div>
+          <div class="stu-id">${s.id}</div>
         </div>
-        <button class="btn-next" id="btnNext" onclick="goNext()">
-          ${btnLabel}
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-            <path d="M3 7h8M7.5 3.5L11 7l-3.5 3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </button>
-      </div>
-    </div>`;
-}
-
-function pickAnswer(i){
-  document.querySelectorAll('.opt').forEach(e=>e.classList.remove('chosen'));
-  document.getElementById(`opt_${i}`).classList.add('chosen');
-  chosen=i;
-  document.getElementById('btnNext').classList.add('ready');
-}
-
-function goNext(){
-  answers[curIdx]=(chosen!==null)?chosen:-1;
-  if(curIdx===24){finishExam();return;}
-  renderQuestion(curIdx+1);
-}
-
-/* ─── FINISH ─────────────────────────────────────────── */
-function finishExam(){
-  clearInterval(timerID); t_end=new Date();
-  document.getElementById('prgFill').style.width='100%';
-  document.getElementById('prgCounter').textContent='Completed';
-
-  let cor=0;
-  answers.forEach((a,i)=>{if(a===BANK[i].ans)cor++;});
-  const wrg=25-cor;
-  const pct=Math.round(cor/25*100);
-  const grade=pct>=90?'A':pct>=80?'B':pct>=70?'C':pct>=60?'D':'F';
-  const gradeCol=pct>=90?'#2dd4bf':pct>=80?'#3b82f6':pct>=70?'#d4a843':pct>=60?'#f59e0b':'#f43f5e';
-  const sec=Math.round((t_end-t_start)/1000);
-
-  document.getElementById('resNameDisp').textContent=studentName;
-  document.getElementById('resScore').textContent=cor;
-  document.getElementById('resGrade').textContent=grade;
-  document.getElementById('resGrade').style.background=gradeCol;
-  document.getElementById('stCor').textContent=cor;
-  document.getElementById('stWrg').textContent=wrg;
-  document.getElementById('stPct').textContent=pct+'%';
-
-  // breakdown
-  const grid=document.getElementById('bdGrid');
-  grid.innerHTML=BANK.map((q,i)=>{
-    const a=answers[i];
-    const sk=(a===-1||a===null);
-    const ok=(a===q.ans);
-    const cls=sk?'bi-sk':ok?'bi-ok':'bi-no';
-    const ic=sk?'–':ok?'✓':'✗';
-    const txt=q.stem.replace(/<[^>]+>/g,'').substring(0,72)+'…';
-    return `<div class="bd-item ${cls}">
-      <span class="bi-num">Q${i+1}</span>
-      <span class="bi-ic">${ic}</span>
-      <span class="bi-txt">${txt}</span>
-      <span class="bi-diff">${q.diff}</span>
-    </div>`;
-  }).join('');
-
-  window._examData={studentName,cor,wrg,pct,grade,sec,answers,gradeCol};
-  showPage('pgDone');
-}
-
-/* ─── PDF ─────────────────────────────────────────────── */
-function buildPDF(){
-  const d=window._examData; if(!d)return;
-  const date=new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
-  const mm=String(Math.floor(d.sec/60)).padStart(2,'0');
-  const ss=String(d.sec%60).padStart(2,'0');
-  const keys=['A','B','C','D'];
-
-  const rows=BANK.map((q,i)=>{
-    const a=d.answers[i];
-    const sk=(a===-1||a===null);
-    const ok=(a===q.ans);
-    const sc=ok?'#059669':sk?'#64748b':'#dc2626';
-    const bg=ok?'#f0fdf4':sk?'#f8fafc':'#fff1f2';
-    const st=sk?'Skipped':ok?'✓ Correct':'✗ Incorrect';
-    const ua=sk?'—':`(${keys[a]}) ${q.opts[a].replace(/<[^>]+>/g,'')}`;
-    const ca=`(${keys[q.ans]}) ${q.opts[q.ans].replace(/<[^>]+>/g,'')}`;
-    const qt=q.stem.replace(/<[^>]+>/g,'');
-    const exp=q.exp.replace(/<[^>]+>/g,'').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&').replace(/&nbsp;/g,' ');
-    const diffColor=q.diff==='Easy'?'#0d9488':q.diff==='Hard'?'#dc2626':'#b45309';
-    return `
-    <tr>
-      <td style="padding:12px 14px;background:${bg};border-bottom:1px solid #e2e8f0;vertical-align:top;border-left:3px solid ${sc};">
-        <div style="display:flex;align-items:flex-start;gap:12px;">
-          <div style="flex-shrink:0;text-align:center;min-width:32px;">
-            <div style="font-family:monospace;font-size:11px;color:#64748b;font-weight:600;">Q${i+1}</div>
-            <div style="font-size:10px;color:${diffColor};font-family:monospace;text-transform:uppercase;letter-spacing:.06em;margin-top:3px;">${q.diff}</div>
+        <div class="stu-right">
+          <div class="stu-time">${rec.time || ''}</div>
+          <div style="margin-top:6px;" class="done-check">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
           </div>
-          <div style="flex:1;">
-            <div style="font-size:12.5px;color:#0f172a;line-height:1.55;margin-bottom:6px;font-weight:500;">${qt}</div>
-            <div style="font-size:11px;color:#475569;margin-bottom:3px;"><span style="font-weight:600;color:#1e293b;">Your answer:</span> ${ua}</div>
-            ${!ok?`<div style="font-size:11px;color:#059669;margin-bottom:4px;"><span style="font-weight:600;">Correct answer:</span> ${ca}</div>`:''}
-            <div style="font-size:11px;color:#64748b;line-height:1.55;margin-top:6px;padding:8px 10px;background:rgba(0,0,0,.04);border-radius:6px;border-left:2px solid #cbd5e1;"><span style="font-weight:600;color:#475569;">Explanation: </span>${exp}</div>
-          </div>
-          <div style="flex-shrink:0;font-size:12px;font-weight:700;color:${sc};text-align:right;min-width:64px;font-family:monospace;">${st}</div>
         </div>
-      </td>
-    </tr>`;
+      </div>`;
+    } else {
+      return `<div class="stu-item" onclick="selectStudent('${s.id}')">
+        <div class="stu-avatar">${initials}</div>
+        <div class="stu-info">
+          <div class="stu-name">${s.name}</div>
+          <div class="stu-id">${s.id}</div>
+        </div>
+        <div class="stu-right">
+          <svg class="arrow-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        </div>
+      </div>`;
+    }
   }).join('');
+}
 
-  const pctBar=`<div style="background:#e2e8f0;border-radius:4px;height:8px;overflow:hidden;margin-top:8px;">
-    <div style="height:100%;width:${d.pct}%;background:${d.gradeCol};border-radius:4px;"></div>
-  </div>`;
+function updateDashboard() {
+  const total = STUDENTS.length;
+  const present = Object.keys(state.attendance).length;
+  document.getElementById('dTotal').textContent = total;
+  document.getElementById('dPresent').textContent = present;
+  document.getElementById('dAbsent').textContent = total - present;
+}
 
-  const html=`<!DOCTYPE html>
-<html><head><meta charset="UTF-8">
-<title>Exam Report — ${d.studentName}</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,300&family=Syne:wght@400;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
-<style>
-  *{box-sizing:border-box;margin:0;padding:0}
-  body{background:#f1f5f9;font-family:'Syne',sans-serif;color:#0f172a;}
-  @media print{
-    body{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-    .no-print{display:none;}
-    .page-break{page-break-before:always;}
+// ═══════════════════════════════════════════════
+//  SCREEN 4 — SIGNATURE
+// ═══════════════════════════════════════════════
+function selectStudent(id) {
+  const s = STUDENTS.find(x => x.id === id);
+  if (!s || state.attendance[s.id]) return;
+  state.currentStudent = s;
+  const initials = s.name.split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase();
+  document.getElementById('prevAvatar').textContent = initials;
+  document.getElementById('prevName').textContent = s.name;
+  document.getElementById('prevId').textContent = s.id;
+  goTo('s-sign');
+  initCanvas();
+}
+
+let sigCtx, sigDrawing = false, sigHasMark = false;
+
+function initCanvas() {
+  const wrap = document.getElementById('sigWrap');
+  const canvas = document.getElementById('sigCanvas');
+  const w = wrap.clientWidth;
+  const h = Math.round(w * 0.45);
+  canvas.width = w * window.devicePixelRatio;
+  canvas.height = h * window.devicePixelRatio;
+  canvas.style.height = h + 'px';
+  sigCtx = canvas.getContext('2d');
+  sigCtx.scale(window.devicePixelRatio, window.devicePixelRatio);
+  sigCtx.strokeStyle = '#1a1a2e';
+  sigCtx.lineWidth = 2.5;
+  sigCtx.lineCap = 'round';
+  sigCtx.lineJoin = 'round';
+  sigHasMark = false;
+  document.getElementById('sigHint').style.opacity = '1';
+  document.getElementById('submitBtn').disabled = true;
+
+  // Touch events (Apple Pencil + finger)
+  canvas.addEventListener('touchstart', onTouchStart, {passive:false});
+  canvas.addEventListener('touchmove',  onTouchMove,  {passive:false});
+  canvas.addEventListener('touchend',   onTouchEnd,   {passive:false});
+  // Mouse fallback
+  canvas.addEventListener('mousedown',  onMouseDown);
+  canvas.addEventListener('mousemove',  onMouseMove);
+  canvas.addEventListener('mouseup',    onMouseUp);
+}
+
+function getPos(e, canvas) {
+  const r = canvas.getBoundingClientRect();
+  const src = e.touches ? e.touches[0] : e;
+  return { x: src.clientX - r.left, y: src.clientY - r.top };
+}
+
+function onTouchStart(e) { e.preventDefault(); sigDrawing = true; const p = getPos(e, e.target); sigCtx.beginPath(); sigCtx.moveTo(p.x, p.y); }
+function onTouchMove(e)  { e.preventDefault(); if (!sigDrawing) return; const p = getPos(e, e.target); sigCtx.lineTo(p.x, p.y); sigCtx.stroke(); markSig(); }
+function onTouchEnd(e)   { e.preventDefault(); sigDrawing = false; }
+function onMouseDown(e)  { sigDrawing = true; const p = getPos(e, e.target); sigCtx.beginPath(); sigCtx.moveTo(p.x, p.y); }
+function onMouseMove(e)  { if (!sigDrawing) return; const p = getPos(e, e.target); sigCtx.lineTo(p.x, p.y); sigCtx.stroke(); markSig(); }
+function onMouseUp()     { sigDrawing = false; }
+
+function markSig() {
+  if (!sigHasMark) {
+    sigHasMark = true;
+    document.getElementById('sigHint').style.opacity = '0';
+    document.getElementById('submitBtn').disabled = false;
   }
-</style>
-</head><body>
-<div style="max-width:860px;margin:0 auto;padding:32px 40px 60px;">
-
-  <!-- COVER HEADER -->
-  <div style="background:linear-gradient(135deg,#06080f,#0a0e1a,#0f1525);border-radius:20px;padding:48px 52px;margin-bottom:24px;position:relative;overflow:hidden;">
-    <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#d4a843,#2dd4bf,#8b5cf6,#d4a843);background-size:200%;"></div>
-    <div style="position:absolute;top:-60px;right:-60px;width:240px;height:240px;border-radius:50%;background:radial-gradient(circle,rgba(212,168,67,.08),transparent 70%);"></div>
-    <div style="font-family:'Fira Code',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#64748b;margin-bottom:12px;">MECE 4372 · University of Houston · Spring 2026</div>
-    <div style="font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:700;color:#f0c96a;margin-bottom:4px;">Spring 2026</div>
-    <div style="font-family:'Cormorant Garamond',serif;font-size:22px;font-style:italic;font-weight:300;color:rgba(240,201,106,.7);margin-bottom:36px;">Mechanics Practice Questions — Examination Report</div>
-    <div style="display:flex;align-items:center;gap:40px;flex-wrap:wrap;">
-      <div style="text-align:center;">
-        <div style="font-family:'Cormorant Garamond',serif;font-size:80px;font-weight:700;line-height:1;background:linear-gradient(135deg,#d4a843,#f0c96a,#ffe5a0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">${d.cor}</div>
-        <div style="font-family:'Fira Code',monospace;font-size:11px;color:#475569;text-transform:uppercase;letter-spacing:.1em;margin-top:4px;">out of 25</div>
-      </div>
-      <div style="width:1px;height:80px;background:rgba(255,255,255,.1);flex-shrink:0;"></div>
-      <div>
-        <div style="font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:700;font-style:italic;color:${d.gradeCol};line-height:1;">${d.grade}</div>
-        <div style="font-family:'Fira Code',monospace;font-size:11px;color:#475569;text-transform:uppercase;letter-spacing:.1em;margin-top:4px;">${d.pct}% Score</div>
-        ${pctBar}
-      </div>
-    </div>
-  </div>
-
-  <!-- STUDENT INFO -->
-  <div style="background:white;border:1px solid #e2e8f0;border-radius:14px;padding:24px 32px;margin-bottom:20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:20px;">
-    <div>
-      <div style="font-family:'Fira Code',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.12em;color:#94a3b8;margin-bottom:5px;">Student Name</div>
-      <div style="font-family:'Cormorant Garamond',serif;font-size:18px;font-style:italic;color:#0f172a;">${d.studentName}</div>
-    </div>
-    <div>
-      <div style="font-family:'Fira Code',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.12em;color:#94a3b8;margin-bottom:5px;">Exam Date</div>
-      <div style="font-size:14px;color:#334155;">${date}</div>
-    </div>
-    <div>
-      <div style="font-family:'Fira Code',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.12em;color:#94a3b8;margin-bottom:5px;">Time Taken</div>
-      <div style="font-size:14px;color:#334155;">${mm} min ${ss} sec</div>
-    </div>
-    <div>
-      <div style="font-family:'Fira Code',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.12em;color:#94a3b8;margin-bottom:5px;">Course</div>
-      <div style="font-size:14px;color:#334155;">MECE 4372 Control Systems</div>
-    </div>
-  </div>
-
-  <!-- STATS ROW -->
-  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px;">
-    <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:20px;text-align:center;border-top:3px solid #10b981;">
-      <div style="font-family:'Cormorant Garamond',serif;font-size:38px;font-weight:700;color:#059669;">${d.cor}</div>
-      <div style="font-family:'Fira Code',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:#16a34a;margin-top:4px;">Correct</div>
-    </div>
-    <div style="background:#fff1f2;border:1px solid #fecdd3;border-radius:12px;padding:20px;text-align:center;border-top:3px solid #f43f5e;">
-      <div style="font-family:'Cormorant Garamond',serif;font-size:38px;font-weight:700;color:#dc2626;">${d.wrg}</div>
-      <div style="font-family:'Fira Code',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:#dc2626;margin-top:4px;">Incorrect</div>
-    </div>
-    <div style="background:#fefce8;border:1px solid #fde68a;border-radius:12px;padding:20px;text-align:center;border-top:3px solid #d4a843;">
-      <div style="font-family:'Cormorant Garamond',serif;font-size:38px;font-weight:700;color:#b45309;">${d.pct}%</div>
-      <div style="font-family:'Fira Code',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:#92400e;margin-top:4px;">Score</div>
-    </div>
-  </div>
-
-  <!-- BREAKDOWN TABLE -->
-  <div style="background:white;border:1px solid #e2e8f0;border-radius:14px;overflow:hidden;margin-bottom:32px;">
-    <div style="padding:18px 24px;border-bottom:2px solid #f1f5f9;background:linear-gradient(135deg,#0f172a,#1e293b);">
-      <span style="font-family:'Cormorant Garamond',serif;font-size:18px;font-style:italic;color:#f0c96a;">Detailed Question-by-Question Breakdown</span>
-    </div>
-    <table style="width:100%;border-collapse:collapse;">
-      <tbody>${rows}</tbody>
-    </table>
-  </div>
-
-  <!-- FOOTER -->
-  <div style="text-align:center;font-family:'Fira Code',monospace;font-size:10px;color:#94a3b8;letter-spacing:.08em;">
-    MECE 4372 — Control Systems Analysis &amp; Design · University of Houston · Spring 2026<br>
-    Auto-generated report · ${date} · Score: ${d.cor}/25 (${d.pct}%) · Grade: ${d.grade}
-  </div>
-
-</div>
-</body></html>`;
-
-  const win=window.open('','_blank');
-  if(!win){alert('Please allow popups to generate the PDF report.');return;}
-  win.document.write(html);
-  win.document.close();
-  setTimeout(()=>win.print(),1000);
 }
 
-/* ─── RETRY ──────────────────────────────────────────── */
-function restartExam(){
-  answers=new Array(25).fill(null);
-  curIdx=0;chosen=null;
-  timerSec=90*60;clearInterval(timerID);
-  document.getElementById('timerText').textContent='90:00';
-  document.getElementById('timerText').classList.remove('warn');
-  const ring=document.getElementById('ringCircle');
-  ring.style.stroke='#d4a843';ring.style.strokeDashoffset='0';
-  document.getElementById('nameInp').value='';
-  showPage('pgIntro');
+function clearSig() {
+  const canvas = document.getElementById('sigCanvas');
+  sigCtx.clearRect(0, 0, canvas.width, canvas.height);
+  sigHasMark = false;
+  document.getElementById('sigHint').style.opacity = '1';
+  document.getElementById('submitBtn').disabled = true;
+}
+
+// ═══════════════════════════════════════════════
+//  SUBMIT
+// ═══════════════════════════════════════════════
+async function submitAttendance() {
+  if (!sigHasMark || !state.currentStudent) return;
+  const canvas = document.getElementById('sigCanvas');
+  const sigData = canvas.toDataURL('image/png');
+  const now = new Date();
+  const timeStr = now.toLocaleTimeString('en-US', {hour:'2-digit', minute:'2-digit', hour12:true});
+
+  showLoader('Uploading signature…');
+  try {
+    const resp = await fetch(SCRIPT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: 'recordAttendance',
+        date: state.selectedDate,
+        name: state.currentStudent.name,
+        studentId: state.currentStudent.id,
+        time: timeStr,
+        signature: sigData,
+      })
+    });
+    const data = await resp.json();
+    if (data.status !== 'ok') throw new Error(data.message || 'Server error');
+
+    state.attendance[state.currentStudent.id] = { time: timeStr, sigUrl: data.sigUrl || '' };
+    updateDashboard();
+
+    document.getElementById('sucName').textContent = state.currentStudent.name;
+    document.getElementById('sucTime').textContent = `Signed at ${timeStr} · ${formatDate(state.selectedDate)}`;
+    hideLoader();
+    goTo('s-success');
+  } catch(e) {
+    hideLoader();
+    toast('Error saving: ' + e.message);
+  }
+}
+
+// ═══════════════════════════════════════════════
+//  HELPERS
+// ═══════════════════════════════════════════════
+function formatDate(iso) {
+  const d = new Date(iso + 'T12:00:00');
+  return d.toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+}
+function showLoader(msg) {
+  document.getElementById('loaderMsg').textContent = msg || 'Loading…';
+  document.getElementById('loader').classList.add('on');
+}
+function hideLoader() { document.getElementById('loader').classList.remove('on'); }
+let toastTimer;
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), 3000);
 }
 </script>
 </body>
