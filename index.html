@@ -6,7 +6,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Class Attendance</title>
-<link href="https://script.google.com/macros/s/AKfycbwpzc6XlzXafVODH2i0MOda_xLV0ikxalCgVg2x6RNeEbW9-jLli5GGPkHC3mrINsRo/exec" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
   --ink: #1a1a2e;
@@ -697,13 +697,12 @@ input[type="date"]:focus { border-color: var(--accent); }
 <div id="toast"></div>
 
 <script>
-// ═══════════════════════════════════════════════
-//  CONFIG — paste your Apps Script URL here
-// ═══════════════════════════════════════════════
-const SCRIPT_URL = 'YOUR_APPS_SCRIPT_WEB_APP_URL_HERE';
+// ════════════════════════════════════════════════════════
+//  CONFIG
+// ════════════════════════════════════════════════════════
+const SCRIPT_URL  = 'https://script.google.com/macros/s/AKfycbxfMIrcIXRdOlBWAmehpCetxnwWhDzx_aa4cNldzV0mVVzZTggkzYUfuGgeku6iiU1W/exec';
 const CORRECT_PIN = '1234';
 
-// ── Student roster (pre-loaded, edit as needed) ──
 const STUDENTS = [
   { name: 'Aarav Sharma',    id: 'STU001' },
   { name: 'Priya Patel',     id: 'STU002' },
@@ -722,34 +721,31 @@ const STUDENTS = [
   { name: 'Pooja Desai',     id: 'STU015' },
 ];
 
-// ═══════════════════════════════════════════════
+// ════════════════════════════════════════════════════════
 //  STATE
-// ═══════════════════════════════════════════════
+// ════════════════════════════════════════════════════════
 let state = {
-  selectedDate: '',
-  currentStudent: null,
-  attendance: {},      // { studentId: { time, sigUrl } }
-  filterMode: 'all',
-  searchQuery: '',
+  selectedDate   : '',
+  currentStudent : null,
+  attendance     : {},
+  filterMode     : 'all',
+  searchQuery    : '',
 };
 
-// ═══════════════════════════════════════════════
-//  SCREEN ROUTING
-// ═══════════════════════════════════════════════
+// ════════════════════════════════════════════════════════
+//  SCREEN ROUTER
+// ════════════════════════════════════════════════════════
 function goTo(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 }
 
-// ═══════════════════════════════════════════════
+// ════════════════════════════════════════════════════════
 //  SCREEN 1 — DATE
-// ═══════════════════════════════════════════════
-(function initDatePicker() {
+// ════════════════════════════════════════════════════════
+(function initDate() {
   const today = new Date();
-  const yyyy = today.getFullYear();
-  const mm = String(today.getMonth()+1).padStart(2,'0');
-  const dd = String(today.getDate()).padStart(2,'0');
-  const v = `${yyyy}-${mm}-${dd}`;
+  const v = today.toISOString().slice(0,10);
   document.getElementById('datePicker').value = v;
   onDatePick(v);
 })();
@@ -758,11 +754,11 @@ function onDatePick(val) {
   if (!val) { document.getElementById('dateNext').disabled = true; return; }
   state.selectedDate = val;
   const d = new Date(val + 'T12:00:00');
-  const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const days   = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
   const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-  document.getElementById('dateBig').textContent = String(d.getDate()).padStart(2,'0');
+  document.getElementById('dateBig').textContent     = String(d.getDate()).padStart(2,'0');
   document.getElementById('dateWeekday').textContent = days[d.getDay()];
-  document.getElementById('dateMonth').textContent = `${months[d.getMonth()]} ${d.getFullYear()}`;
+  document.getElementById('dateMonth').textContent   = months[d.getMonth()] + ' ' + d.getFullYear();
   document.getElementById('dateNext').disabled = false;
 }
 
@@ -773,66 +769,77 @@ function goToPin() {
   goTo('s-pin');
 }
 
-// ═══════════════════════════════════════════════
+// ════════════════════════════════════════════════════════
 //  SCREEN 2 — PIN
-// ═══════════════════════════════════════════════
+// ════════════════════════════════════════════════════════
 let pinVal = '';
-function pinReset() {
-  pinVal = '';
-  updateDots();
-  document.getElementById('pinError').textContent = '';
-}
+function pinReset() { pinVal = ''; updateDots(); document.getElementById('pinError').textContent = ''; }
 function kp(d) {
   if (pinVal.length >= 4) return;
-  pinVal += d;
-  updateDots();
+  pinVal += d; updateDots();
   if (pinVal.length === 4) setTimeout(checkPin, 200);
 }
-function kpDel() {
-  pinVal = pinVal.slice(0,-1);
-  updateDots();
-  document.getElementById('pinError').textContent = '';
-}
+function kpDel() { pinVal = pinVal.slice(0,-1); updateDots(); document.getElementById('pinError').textContent = ''; }
 function updateDots() {
-  for (let i=0; i<4; i++) {
-    const d = document.getElementById(`pd${i}`);
-    d.classList.toggle('filled', i < pinVal.length);
-    d.classList.remove('error');
+  for (let i=0;i<4;i++) {
+    const dot = document.getElementById('pd'+i);
+    dot.classList.toggle('filled', i < pinVal.length);
+    dot.classList.remove('error');
   }
 }
 function checkPin() {
   if (pinVal === CORRECT_PIN) {
     goToStudentList();
   } else {
-    for (let i=0; i<4; i++) document.getElementById(`pd${i}`).classList.add('error');
+    for (let i=0;i<4;i++) document.getElementById('pd'+i).classList.add('error');
     document.getElementById('pinError').textContent = 'Incorrect PIN. Try again.';
-    setTimeout(() => { pinReset(); }, 900);
+    setTimeout(pinReset, 900);
   }
 }
 
-// ═══════════════════════════════════════════════
+// ════════════════════════════════════════════════════════
 //  SCREEN 3 — STUDENT LIST
-// ═══════════════════════════════════════════════
+// ════════════════════════════════════════════════════════
 function goToStudentList() {
   document.getElementById('listDateLabel').textContent = formatDate(state.selectedDate);
   goTo('s-students');
   loadAttendance();
 }
 
+// JSONP — only used for lightweight GET (no signature data)
+function jsonp(params) {
+  return new Promise((resolve, reject) => {
+    const cbName = 'cb_' + Date.now() + '_' + Math.floor(Math.random()*9999);
+    const timer  = setTimeout(() => {
+      delete window[cbName];
+      reject(new Error('Timed out'));
+    }, 20000);
+    window[cbName] = (data) => {
+      clearTimeout(timer);
+      delete window[cbName];
+      resolve(data);
+    };
+    const qs = Object.entries({...params, callback: cbName})
+      .map(([k,v]) => encodeURIComponent(k)+'='+encodeURIComponent(v)).join('&');
+    const sc = document.createElement('script');
+    sc.src = SCRIPT_URL + '?' + qs;
+    sc.onerror = () => { clearTimeout(timer); delete window[cbName]; reject(new Error('Load failed')); };
+    document.head.appendChild(sc);
+  });
+}
+
 async function loadAttendance() {
   showLoader('Loading attendance…');
   try {
-    const url = `${SCRIPT_URL}?action=getAttendance&date=${state.selectedDate}`;
-    const resp = await fetch(url);
-    const data = await resp.json();
+    const data = await jsonp({ action: 'getAttendance', date: state.selectedDate });
     if (data.status === 'ok') {
       state.attendance = {};
-      (data.records || []).forEach(r => {
+      (data.records||[]).forEach(r => {
         state.attendance[r.studentId] = { time: r.time, sigUrl: r.sigUrl };
       });
     }
   } catch(e) {
-    toast('Could not load from server — showing local state');
+    toast('Could not reach server — showing local state');
   }
   hideLoader();
   renderStudents();
@@ -848,35 +855,28 @@ async function refreshList() {
 
 function setFilter(mode) {
   state.filterMode = mode;
-  ['all','pending','done'].forEach(m => {
-    document.getElementById(`chip-${m}`).classList.toggle('active', m === mode);
-  });
+  ['all','pending','done'].forEach(m =>
+    document.getElementById('chip-'+m).classList.toggle('active', m===mode));
   renderStudents();
 }
 
-function filterStudents(q) {
-  state.searchQuery = q.toLowerCase();
-  renderStudents();
-}
+function filterStudents(q) { state.searchQuery = q.toLowerCase(); renderStudents(); }
 
 function renderStudents() {
   const list = document.getElementById('stuList');
-  let filtered = STUDENTS.filter(s => {
-    const q = state.searchQuery;
+  const filtered = STUDENTS.filter(s => {
+    const q    = state.searchQuery;
     const match = !q || s.name.toLowerCase().includes(q) || s.id.toLowerCase().includes(q);
-    const done = !!state.attendance[s.id];
-    if (state.filterMode === 'pending' && done) return false;
-    if (state.filterMode === 'done' && !done) return false;
+    const done  = !!state.attendance[s.id];
+    if (state.filterMode === 'pending' && done)  return false;
+    if (state.filterMode === 'done'    && !done) return false;
     return match;
   });
 
-  if (!filtered.length) {
-    list.innerHTML = `<div class="no-results">No students found</div>`;
-    return;
-  }
+  if (!filtered.length) { list.innerHTML = '<div class="no-results">No students found</div>'; return; }
 
   list.innerHTML = filtered.map(s => {
-    const rec = state.attendance[s.id];
+    const rec      = state.attendance[s.id];
     const initials = s.name.split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase();
     if (rec) {
       return `<div class="stu-item done">
@@ -886,8 +886,8 @@ function renderStudents() {
           <div class="stu-id">${s.id}</div>
         </div>
         <div class="stu-right">
-          <div class="stu-time">${rec.time || ''}</div>
-          <div style="margin-top:6px;" class="done-check">
+          <div class="stu-time">${rec.time||''}</div>
+          <div style="margin-top:6px" class="done-check">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
           </div>
         </div>
@@ -908,24 +908,24 @@ function renderStudents() {
 }
 
 function updateDashboard() {
-  const total = STUDENTS.length;
+  const total   = STUDENTS.length;
   const present = Object.keys(state.attendance).length;
-  document.getElementById('dTotal').textContent = total;
+  document.getElementById('dTotal').textContent   = total;
   document.getElementById('dPresent').textContent = present;
-  document.getElementById('dAbsent').textContent = total - present;
+  document.getElementById('dAbsent').textContent  = total - present;
 }
 
-// ═══════════════════════════════════════════════
+// ════════════════════════════════════════════════════════
 //  SCREEN 4 — SIGNATURE
-// ═══════════════════════════════════════════════
+// ════════════════════════════════════════════════════════
 function selectStudent(id) {
   const s = STUDENTS.find(x => x.id === id);
   if (!s || state.attendance[s.id]) return;
   state.currentStudent = s;
   const initials = s.name.split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase();
   document.getElementById('prevAvatar').textContent = initials;
-  document.getElementById('prevName').textContent = s.name;
-  document.getElementById('prevId').textContent = s.id;
+  document.getElementById('prevName').textContent   = s.name;
+  document.getElementById('prevId').textContent     = s.id;
   goTo('s-sign');
   initCanvas();
 }
@@ -933,45 +933,41 @@ function selectStudent(id) {
 let sigCtx, sigDrawing = false, sigHasMark = false;
 
 function initCanvas() {
-  const wrap = document.getElementById('sigWrap');
+  const wrap   = document.getElementById('sigWrap');
   const canvas = document.getElementById('sigCanvas');
   const w = wrap.clientWidth;
   const h = Math.round(w * 0.45);
-  canvas.width = w * window.devicePixelRatio;
+  canvas.width  = w * window.devicePixelRatio;
   canvas.height = h * window.devicePixelRatio;
   canvas.style.height = h + 'px';
   sigCtx = canvas.getContext('2d');
   sigCtx.scale(window.devicePixelRatio, window.devicePixelRatio);
   sigCtx.strokeStyle = '#1a1a2e';
-  sigCtx.lineWidth = 2.5;
-  sigCtx.lineCap = 'round';
-  sigCtx.lineJoin = 'round';
+  sigCtx.lineWidth   = 2.5;
+  sigCtx.lineCap     = 'round';
+  sigCtx.lineJoin    = 'round';
   sigHasMark = false;
   document.getElementById('sigHint').style.opacity = '1';
   document.getElementById('submitBtn').disabled = true;
 
-  // Touch events (Apple Pencil + finger)
-  canvas.addEventListener('touchstart', onTouchStart, {passive:false});
-  canvas.addEventListener('touchmove',  onTouchMove,  {passive:false});
-  canvas.addEventListener('touchend',   onTouchEnd,   {passive:false});
-  // Mouse fallback
-  canvas.addEventListener('mousedown',  onMouseDown);
-  canvas.addEventListener('mousemove',  onMouseMove);
-  canvas.addEventListener('mouseup',    onMouseUp);
+  canvas.addEventListener('touchstart', onTS, {passive:false});
+  canvas.addEventListener('touchmove',  onTM, {passive:false});
+  canvas.addEventListener('touchend',   onTE, {passive:false});
+  canvas.addEventListener('mousedown',  onMD);
+  canvas.addEventListener('mousemove',  onMM);
+  canvas.addEventListener('mouseup',    ()=>{ sigDrawing=false; });
 }
 
-function getPos(e, canvas) {
-  const r = canvas.getBoundingClientRect();
-  const src = e.touches ? e.touches[0] : e;
-  return { x: src.clientX - r.left, y: src.clientY - r.top };
+function pos(e, c) {
+  const r = c.getBoundingClientRect();
+  const s = e.touches ? e.touches[0] : e;
+  return { x: s.clientX-r.left, y: s.clientY-r.top };
 }
-
-function onTouchStart(e) { e.preventDefault(); sigDrawing = true; const p = getPos(e, e.target); sigCtx.beginPath(); sigCtx.moveTo(p.x, p.y); }
-function onTouchMove(e)  { e.preventDefault(); if (!sigDrawing) return; const p = getPos(e, e.target); sigCtx.lineTo(p.x, p.y); sigCtx.stroke(); markSig(); }
-function onTouchEnd(e)   { e.preventDefault(); sigDrawing = false; }
-function onMouseDown(e)  { sigDrawing = true; const p = getPos(e, e.target); sigCtx.beginPath(); sigCtx.moveTo(p.x, p.y); }
-function onMouseMove(e)  { if (!sigDrawing) return; const p = getPos(e, e.target); sigCtx.lineTo(p.x, p.y); sigCtx.stroke(); markSig(); }
-function onMouseUp()     { sigDrawing = false; }
+function onTS(e){ e.preventDefault(); sigDrawing=true; const p=pos(e,e.target); sigCtx.beginPath(); sigCtx.moveTo(p.x,p.y); }
+function onTM(e){ e.preventDefault(); if(!sigDrawing)return; const p=pos(e,e.target); sigCtx.lineTo(p.x,p.y); sigCtx.stroke(); markSig(); }
+function onTE(e){ e.preventDefault(); sigDrawing=false; }
+function onMD(e){ sigDrawing=true; const p=pos(e,e.target); sigCtx.beginPath(); sigCtx.moveTo(p.x,p.y); }
+function onMM(e){ if(!sigDrawing)return; const p=pos(e,e.target); sigCtx.lineTo(p.x,p.y); sigCtx.stroke(); markSig(); }
 
 function markSig() {
   if (!sigHasMark) {
@@ -980,64 +976,116 @@ function markSig() {
     document.getElementById('submitBtn').disabled = false;
   }
 }
-
 function clearSig() {
-  const canvas = document.getElementById('sigCanvas');
-  sigCtx.clearRect(0, 0, canvas.width, canvas.height);
+  const c = document.getElementById('sigCanvas');
+  sigCtx.clearRect(0,0,c.width,c.height);
   sigHasMark = false;
   document.getElementById('sigHint').style.opacity = '1';
   document.getElementById('submitBtn').disabled = true;
 }
 
-// ═══════════════════════════════════════════════
-//  SUBMIT
-// ═══════════════════════════════════════════════
-async function submitAttendance() {
+// ════════════════════════════════════════════════════════
+//  SUBMIT via hidden iframe + form POST
+//  Works on iPad Safari — no CORS, no URL length limit
+// ════════════════════════════════════════════════════════
+function submitAttendance() {
   if (!sigHasMark || !state.currentStudent) return;
-  const canvas = document.getElementById('sigCanvas');
-  const sigData = canvas.toDataURL('image/png');
-  const now = new Date();
+
+  // Compress to small JPEG
+  const src   = document.getElementById('sigCanvas');
+  const small = document.createElement('canvas');
+  small.width = 500; small.height = 200;
+  const ctx2 = small.getContext('2d');
+  ctx2.fillStyle = '#ffffff';
+  ctx2.fillRect(0,0,500,200);
+  ctx2.drawImage(src, 0, 0, 500, 200);
+  const sigBase64 = small.toDataURL('image/jpeg', 0.75)
+                         .replace(/^data:image\/jpeg;base64,/, '');
+
+  const now     = new Date();
   const timeStr = now.toLocaleTimeString('en-US', {hour:'2-digit', minute:'2-digit', hour12:true});
 
-  showLoader('Uploading signature…');
-  try {
-    const resp = await fetch(SCRIPT_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        action: 'recordAttendance',
-        date: state.selectedDate,
-        name: state.currentStudent.name,
-        studentId: state.currentStudent.id,
-        time: timeStr,
-        signature: sigData,
-      })
-    });
-    const data = await resp.json();
-    if (data.status !== 'ok') throw new Error(data.message || 'Server error');
+  showLoader('Saving attendance…');
 
-    state.attendance[state.currentStudent.id] = { time: timeStr, sigUrl: data.sigUrl || '' };
+  // Listen for the response from the iframe
+  const onMsg = (event) => {
+    window.removeEventListener('message', onMsg);
+    hideLoader();
+    const data = (typeof event.data === 'string') ? JSON.parse(event.data) : event.data;
+    if (data.status === 'ok') {
+      state.attendance[state.currentStudent.id] = { time: timeStr, sigUrl: data.sigUrl||'' };
+      updateDashboard();
+      document.getElementById('sucName').textContent = state.currentStudent.name;
+      document.getElementById('sucTime').textContent =
+        'Signed at ' + timeStr + ' · ' + formatDate(state.selectedDate);
+      goTo('s-success');
+    } else {
+      toast('Error: ' + (data.message || 'Unknown error'));
+    }
+    // Clean up iframe
+    const old = document.getElementById('postFrame');
+    if (old) old.remove();
+  };
+  window.addEventListener('message', onMsg);
+
+  // Build hidden iframe + form
+  const iframe = document.createElement('iframe');
+  iframe.id    = 'postFrame';
+  iframe.name  = 'postFrame';
+  iframe.style.display = 'none';
+  document.body.appendChild(iframe);
+
+  const form = document.createElement('form');
+  form.method = 'POST';
+  form.action = SCRIPT_URL;
+  form.target = 'postFrame';
+  form.style.display = 'none';
+
+  const fields = {
+    action    : 'recordAttendance',
+    date      : state.selectedDate,
+    name      : state.currentStudent.name,
+    studentId : state.currentStudent.id,
+    time      : timeStr,
+    sig       : sigBase64,
+  };
+  Object.entries(fields).forEach(([k,v]) => {
+    const inp = document.createElement('input');
+    inp.type  = 'hidden';
+    inp.name  = k;
+    inp.value = v;
+    form.appendChild(inp);
+  });
+
+  document.body.appendChild(form);
+  form.submit();
+
+  // Fallback timeout in case postMessage never fires
+  setTimeout(() => {
+    window.removeEventListener('message', onMsg);
+    hideLoader();
+    // Optimistically mark as done and move on
+    state.attendance[state.currentStudent.id] = { time: timeStr, sigUrl: '' };
     updateDashboard();
-
     document.getElementById('sucName').textContent = state.currentStudent.name;
-    document.getElementById('sucTime').textContent = `Signed at ${timeStr} · ${formatDate(state.selectedDate)}`;
-    hideLoader();
+    document.getElementById('sucTime').textContent =
+      'Signed at ' + timeStr + ' · ' + formatDate(state.selectedDate);
     goTo('s-success');
-  } catch(e) {
-    hideLoader();
-    toast('Error saving: ' + e.message);
-  }
+    toast('Saved (server response pending)');
+    const old = document.getElementById('postFrame');
+    if (old) old.remove();
+  }, 25000);
 }
 
-// ═══════════════════════════════════════════════
+// ════════════════════════════════════════════════════════
 //  HELPERS
-// ═══════════════════════════════════════════════
+// ════════════════════════════════════════════════════════
 function formatDate(iso) {
   const d = new Date(iso + 'T12:00:00');
-  return d.toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+  return d.toLocaleDateString('en-US', {weekday:'long', year:'numeric', month:'long', day:'numeric'});
 }
 function showLoader(msg) {
-  document.getElementById('loaderMsg').textContent = msg || 'Loading…';
+  document.getElementById('loaderMsg').textContent = msg||'Loading…';
   document.getElementById('loader').classList.add('on');
 }
 function hideLoader() { document.getElementById('loader').classList.remove('on'); }
@@ -1047,7 +1095,7 @@ function toast(msg) {
   el.textContent = msg;
   el.classList.add('show');
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => el.classList.remove('show'), 3000);
+  toastTimer = setTimeout(()=>el.classList.remove('show'), 3500);
 }
 </script>
 </body>
