@@ -991,90 +991,64 @@ function clearSig() {
 function submitAttendance() {
   if (!sigHasMark || !state.currentStudent) return;
 
-  // Compress to small JPEG
+  // Compress signature aggressively — 350x140 JPEG at 60% quality
+  // Keeps it small (~5-8KB) so POST is fast
   const src   = document.getElementById('sigCanvas');
   const small = document.createElement('canvas');
-  small.width = 500; small.height = 200;
+  small.width = 350; small.height = 140;
   const ctx2 = small.getContext('2d');
   ctx2.fillStyle = '#ffffff';
-  ctx2.fillRect(0,0,500,200);
-  ctx2.drawImage(src, 0, 0, 500, 200);
-  const sigBase64 = small.toDataURL('image/jpeg', 0.75)
+  ctx2.fillRect(0, 0, 350, 140);
+  ctx2.drawImage(src, 0, 0, 350, 140);
+  const sigBase64 = small.toDataURL('image/jpeg', 0.6)
                          .replace(/^data:image\/jpeg;base64,/, '');
 
   const now     = new Date();
   const timeStr = now.toLocaleTimeString('en-US', {hour:'2-digit', minute:'2-digit', hour12:true});
+  const student = state.currentStudent;
 
-  showLoader('Saving attendance…');
+  // ── OPTIMISTIC UI: show success immediately, submit in background ──
+  // Mark student present locally right away — no waiting for server
+  state.attendance[student.id] = { time: timeStr, sigUrl: '' };
+  updateDashboard();
+  document.getElementById('sucName').textContent = student.name;
+  document.getElementById('sucTime').textContent =
+    'Signed at ' + timeStr + ' · ' + formatDate(state.selectedDate);
+  goTo('s-success');
 
-  // Listen for the response from the iframe
-  const onMsg = (event) => {
-    window.removeEventListener('message', onMsg);
-    hideLoader();
-    const data = (typeof event.data === 'string') ? JSON.parse(event.data) : event.data;
-    if (data.status === 'ok') {
-      state.attendance[state.currentStudent.id] = { time: timeStr, sigUrl: data.sigUrl||'' };
-      updateDashboard();
-      document.getElementById('sucName').textContent = state.currentStudent.name;
-      document.getElementById('sucTime').textContent =
-        'Signed at ' + timeStr + ' · ' + formatDate(state.selectedDate);
-      goTo('s-success');
-    } else {
-      toast('Error: ' + (data.message || 'Unknown error'));
-    }
-    // Clean up iframe
-    const old = document.getElementById('postFrame');
-    if (old) old.remove();
-  };
-  window.addEventListener('message', onMsg);
-
-  // Build hidden iframe + form
+  // Submit to server silently in background via hidden iframe
   const iframe = document.createElement('iframe');
-  iframe.id    = 'postFrame';
-  iframe.name  = 'postFrame';
+  iframe.name  = 'bgFrame_' + Date.now();
   iframe.style.display = 'none';
   document.body.appendChild(iframe);
 
   const form = document.createElement('form');
   form.method = 'POST';
   form.action = SCRIPT_URL;
-  form.target = 'postFrame';
+  form.target = iframe.name;
   form.style.display = 'none';
 
   const fields = {
     action    : 'recordAttendance',
     date      : state.selectedDate,
-    name      : state.currentStudent.name,
-    studentId : state.currentStudent.id,
+    name      : student.name,
+    studentId : student.id,
     time      : timeStr,
     sig       : sigBase64,
   };
   Object.entries(fields).forEach(([k,v]) => {
     const inp = document.createElement('input');
-    inp.type  = 'hidden';
-    inp.name  = k;
-    inp.value = v;
+    inp.type = 'hidden'; inp.name = k; inp.value = v;
     form.appendChild(inp);
   });
-
   document.body.appendChild(form);
   form.submit();
 
-  // Fallback timeout in case postMessage never fires
+  // Clean up iframe after 30s
   setTimeout(() => {
-    window.removeEventListener('message', onMsg);
-    hideLoader();
-    // Optimistically mark as done and move on
-    state.attendance[state.currentStudent.id] = { time: timeStr, sigUrl: '' };
-    updateDashboard();
-    document.getElementById('sucName').textContent = state.currentStudent.name;
-    document.getElementById('sucTime').textContent =
-      'Signed at ' + timeStr + ' · ' + formatDate(state.selectedDate);
-    goTo('s-success');
-    toast('Saved (server response pending)');
-    const old = document.getElementById('postFrame');
-    if (old) old.remove();
-  }, 25000);
+    if (iframe.parentNode) iframe.parentNode.removeChild(iframe);
+    if (form.parentNode)   form.parentNode.removeChild(form);
+  }, 30000);
 }
 
 // ════════════════════════════════════════════════════════
